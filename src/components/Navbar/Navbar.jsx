@@ -8,10 +8,13 @@ const menuItems = [
   { label: "Experience", scrollToId: "experience", bg: "bg-yellow-100" },
   { label: "My Work", scrollToId: "worked", bg: "bg-green-100" },
   { label: "Reviews", scrollToId: "reviews", bg: "bg-blue-100" },
-  { label: "Certifications", scrollToId: "certifications", bg: "bg-purple-100" },
+  {
+    label: "Certifications",
+    scrollToId: "certifications",
+    bg: "bg-purple-100",
+  },
   { label: "Contact", scrollToId: "contact", bg: "bg-pink-100" },
 ];
-
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -19,13 +22,12 @@ const Navbar = () => {
   const toggleDropdown = () => setOpen(!open);
 
   const scrollToSection = (id) => {
-  setOpen(false);
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-};
-
+    setOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <div className="w-11/12 mx-auto px-4 py-4 flex items-center justify-between relative">
@@ -71,21 +73,20 @@ const Navbar = () => {
               : "scale-75 opacity-0 -rotate-12 pointer-events-none"
           }`}
         >
-<ul className="overflow-hidden rounded-xl shadow-lg">
-  {menuItems.map(({ label, bg, scrollToId }, i) => (
-    <li
-      key={i}
-      className={`${bg} px-5 py-3 text-sm font-medium text-gray-800 hover:bg-opacity-90 transition-all cursor-pointer border-b`}
-      onClick={() => {
-        if (scrollToId) scrollToSection(scrollToId);
-        else setOpen(false);
-      }}
-    >
-      {label}
-    </li>
-  ))}
-</ul>
-
+          <ul className="overflow-hidden rounded-xl shadow-lg">
+            {menuItems.map(({ label, bg, scrollToId }, i) => (
+              <li
+                key={i}
+                className={`${bg} px-5 py-3 text-sm font-medium text-gray-800 hover:bg-opacity-90 transition-all cursor-pointer border-b`}
+                onClick={() => {
+                  if (scrollToId) scrollToSection(scrollToId);
+                  else setOpen(false);
+                }}
+              >
+                {label}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
