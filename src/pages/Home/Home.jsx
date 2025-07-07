@@ -6,6 +6,8 @@ import Hero from '../../sections/Hero/Hero';
 import MyPortfolio from '../../sections/MyPortfolio/MyPortfolio';
 import Experience from '../../sections/Experience/Experience';
 import Worked from '../../sections/Worked/Worked';
+import Reviews from '../../sections/Reviews/Reviews';
+import Certification from '../../sections/Certification/Certification';
 
 const Home = () => {
   useEffect(() => {
@@ -30,6 +32,12 @@ const Home = () => {
       </section>
       <section data-aos="fade-up">
         <Worked></Worked>
+      </section>
+      <section data-aos="fade-up">
+        <Reviews></Reviews>
+      </section>
+      <section data-aos="fade-up">
+        <Certification></Certification>
       </section>
     </div>
   );

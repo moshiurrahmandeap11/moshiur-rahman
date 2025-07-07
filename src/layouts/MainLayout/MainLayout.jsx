@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import Navbar from '../../components/Navbar/Navbar';
 import CustomCursor from '../../components/CustomCursor/CustomCursor';
+import Footer from '../../components/Footer/Footer';
 
 const MainLayout = () => {
     return (
@@ -13,7 +14,9 @@ const MainLayout = () => {
             <main>
                 <Outlet></Outlet>
             </main>
-            <footer></footer>
+            <footer>
+                <Footer></Footer>
+            </footer>
         </div>
     );
 };
