@@ -29,8 +29,8 @@ const Certification = () => {
   }, []);
 
   return (
-    <section className="h-screen bg-[#0f172a] text-white flex flex-col px-6 py-16">
-      {/* Heading + HR */}
+    <section className="min-h-screen bg-[#0f172a] text-white flex flex-col px-6 py-16">
+      {/* Heading */}
       <div
         className="flex items-center gap-4 mb-12 max-w-4xl mx-auto"
         data-aos="fade-right"
@@ -41,15 +41,15 @@ const Certification = () => {
         <hr className="flex-grow border-t border-orange-600 opacity-60" />
       </div>
 
-      {/* Horizontal scroll container */}
+      {/* Grid layout for responsiveness */}
       <div
-        className="flex space-x-8 overflow-x-auto max-w-6xl mx-auto px-2 py-4 scrollbar-hide"
+        className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 max-w-6xl mx-auto"
         data-aos="fade-up"
       >
         {certificates.map(({ id, title, image, website, country, issued }) => (
           <div
             key={id}
-            className="flex-shrink-0 w-72 bg-[#1e293b] rounded-xl p-6 shadow-md flex flex-col items-start"
+            className="bg-[#1e293b] rounded-xl p-6 shadow-md flex flex-col"
             data-aos="zoom-in"
             data-aos-delay={id * 150}
           >
@@ -60,7 +60,7 @@ const Certification = () => {
               className="w-20 h-20 object-contain rounded-lg mb-4"
             />
 
-            {/* Details */}
+            {/* Info */}
             <a
               href={website}
               target="_blank"
