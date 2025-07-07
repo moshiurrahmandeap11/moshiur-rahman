@@ -3,8 +3,24 @@ import React, { useEffect, useState } from "react";
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768); // md breakpoint
+    };
+
+    // Run on mount
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
     const moveCursor = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -21,7 +37,9 @@ const CustomCursor = () => {
       document.removeEventListener("mouseenter", handleMouseEnter);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [isDesktop]);
+
+  if (!isDesktop) return null;
 
   const styleRing = {
     left: `${position.x - 16}px`,

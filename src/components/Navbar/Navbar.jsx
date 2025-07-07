@@ -30,7 +30,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-11/12 mx-auto px-4 py-4 flex items-center justify-between relative">
+    <div className="lg:w-11/12 mx-auto px-4 py-4 flex items-center justify-between relative">
       {/* Profile */}
       <div className="flex items-center gap-2">
         <img

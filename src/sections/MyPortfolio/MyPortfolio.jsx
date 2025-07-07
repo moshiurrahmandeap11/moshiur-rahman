@@ -103,13 +103,13 @@ const MyPortfolio = () => {
             data-aos="fade-right"
             data-aos-duration="800"
           >
-            About Me
+            My Portfolio
           </h2>
           <hr className="flex-grow border-t border-orange-600 opacity-60" />
         </div>
 
         {/* Content */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-12">
+        <div className="flex flex-col-reverse md:flex-row items-center md:items-start gap-12">
           {/* Left: Description */}
           <div className="md:w-1/2 text-gray-300 text-lg leading-relaxed space-y-5">
             <p data-aos="fade-up" data-aos-duration="900" data-aos-delay="100">

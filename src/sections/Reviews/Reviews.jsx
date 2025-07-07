@@ -125,8 +125,7 @@ const reviews = [
   },
 ];
 
-
-// Helper to split array into chunks of size N
+// helper: split reviews into chunks
 const chunkArray = (arr, size) => {
   const chunks = [];
   for (let i = 0; i < arr.length; i += size) {
@@ -139,46 +138,43 @@ const Reviews = () => {
   const [slideIndex, setSlideIndex] = useState(0);
   const [perSlide, setPerSlide] = useState(3);
 
-  // Group reviews into slides of N (perSlide)
-  const slides = chunkArray(reviews, perSlide);
-
+  // breakpoints
   useEffect(() => {
     Aos.init({ duration: 800, easing: "ease-in-out", once: true });
 
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 640) setPerSlide(1);
-      else if (width < 1024) setPerSlide(2);
-      else setPerSlide(3);
+      if (width < 1024) {
+        setPerSlide(1); // mobile + tablet
+      } else {
+        setPerSlide(3); // desktop
+      }
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  const slides = chunkArray(reviews, perSlide);
+
+  // auto slide
+  useEffect(() => {
     const interval = setInterval(() => {
       setSlideIndex((prev) => (prev + 1) % slides.length);
     }, 5000);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => clearInterval(interval);
   }, [slides.length]);
 
   return (
     <section className="h-screen bg-[#0f172a] text-white flex flex-col justify-center px-4">
-      {/* Heading */}
-      <div
-        className="flex items-center justify-center gap-4 mb-10"
-        data-aos="fade-right"
-      >
-        <h2 className="text-3xl font-bold text-orange-400 whitespace-nowrap">
-          Some Reviews
-        </h2>
+      {/* heading */}
+      <div className="flex items-center justify-center gap-4 mb-10" data-aos="fade-right">
+        <h2 className="text-3xl font-bold text-orange-400 whitespace-nowrap">Some Reviews</h2>
         <hr className="w-full max-w-xs border-t border-orange-600 opacity-60" />
       </div>
 
-      {/* Slide Wrapper */}
+      {/* slides */}
       <div className="overflow-hidden w-full">
         <div
           className="flex transition-transform duration-700 ease-in-out"
@@ -187,22 +183,20 @@ const Reviews = () => {
             transform: `translateX(-${slideIndex * (100 / slides.length)}%)`,
           }}
         >
-          {slides.map((group, i) => (
+          {slides.map((group, slideIdx) => (
             <div
-              key={i}
-              className="w-full flex justify-center items-center gap-6 px-4 flex-shrink-0"
-              style={{ width: "100%", maxWidth: "1280px", margin: "0 auto" }}
+              key={slideIdx}
+              className="w-full flex justify-center items-center gap-6 px-4 flex-shrink-0 max-w-screen-xl mx-auto"
+              style={{ width: "100%" }}
             >
               {group.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-[#1e293b] w-full max-w-sm p-4 rounded-xl shadow-md transition-transform duration-500 hover:scale-[1.02]"
+                  className="bg-[#1e293b] w-full sm:w-[90%] md:w-[80%] lg:w-[30%] p-4 rounded-xl shadow-md transition-transform duration-500 hover:scale-[1.02]"
                   data-aos="fade-up"
-                  data-aos-delay={i * 100}
+                  data-aos-delay={slideIdx * 100}
                 >
-                  <p className="text-gray-300 text-sm italic mb-4 leading-relaxed">
-                    “{review.text}”
-                  </p>
+                  <p className="text-gray-300 text-sm italic mb-4 leading-relaxed">“{review.text}”</p>
                   <div className="text-xs text-gray-400 mt-auto flex flex-col items-end">
                     <span className="font-semibold text-orange-400">{review.name}</span>
                     <span className="italic">— {review.source}</span>
