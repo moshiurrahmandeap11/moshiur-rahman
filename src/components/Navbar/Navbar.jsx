@@ -36,7 +36,7 @@ const Navbar = () => {
         <img
           src={profilePic}
           alt="Profile"
-          className="w-14 h-14 rounded-full object-cover border"
+          className="w-14 h-14 rounded-full object-cover"
         />
       </div>
 

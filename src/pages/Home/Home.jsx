@@ -36,9 +36,9 @@ const Home = () => {
   <Worked />
 </section>
 
-<section id="reviews" data-aos="fade-up">
+{/* <section id="reviews" data-aos="fade-up">
   <Reviews />
-</section>
+</section> */}
 
 <section id="certifications" data-aos="fade-up">
   <Certification />
