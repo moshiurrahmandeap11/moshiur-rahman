@@ -20,25 +20,29 @@ const Home = () => {
 
   return (
     <div>
-      <section data-aos="fade-in">
-        <Hero />
-      </section>
+<section id="hero" data-aos="fade-in">
+  <Hero />
+</section>
 
-      <section data-aos="fade-up">
-        <MyPortfolio />
-      </section>
-      <section data-aos="fade-up">
-        <Experience></Experience>
-      </section>
-      <section data-aos="fade-up">
-        <Worked></Worked>
-      </section>
-      <section data-aos="fade-up">
-        <Reviews></Reviews>
-      </section>
-      <section data-aos="fade-up">
-        <Certification></Certification>
-      </section>
+<section id="myportfolio" data-aos="fade-up">
+  <MyPortfolio />
+</section>
+
+<section id="experience" data-aos="fade-up">
+  <Experience />
+</section>
+
+<section id="worked" data-aos="fade-up">
+  <Worked />
+</section>
+
+<section id="reviews" data-aos="fade-up">
+  <Reviews />
+</section>
+
+<section id="certifications" data-aos="fade-up">
+  <Certification />
+</section>
     </div>
   );
 };

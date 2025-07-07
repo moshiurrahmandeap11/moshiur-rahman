@@ -14,7 +14,7 @@ const MainLayout = () => {
             <main>
                 <Outlet></Outlet>
             </main>
-            <footer>
+            <footer id='contact'>
                 <Footer></Footer>
             </footer>
         </div>
