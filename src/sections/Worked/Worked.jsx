@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import projectThumb from "../../assets/image1.png"; 
-import projectThumb1 from "../../assets/image2.png"; 
+import projectThumb from "../../assets/image1.png";
+import projectThumb1 from "../../assets/image2.png";
 
 const projects = [
   {
@@ -13,7 +13,7 @@ const projects = [
       "A full-stack course management platform with JWT auth, role-based access, payment integration, and seat-limited enrollments.",
     tech: ["React", "Tailwind", "Node.js", "Express", "MongoDB", "JWT"],
     image: projectThumb,
-    link: "https://coursion-9faf6.web.app/"
+    link: "https://coursion-9faf6.web.app/",
   },
   {
     id: 2,
@@ -23,8 +23,8 @@ const projects = [
       "Inspired by Fiverr, Miverr is a full-stack freelance service marketplace with real-time messaging, secure login (JWT & Firebase), service listings, gig ordering, and admin moderation panel. Optimized for UX with mobile responsiveness and animation.",
     tech: ["React", "Tailwind", "Node.js", "Express", "MongoDB", "JWT"],
     image: projectThumb1,
-    link: "https://miverr-7ac31.web.app/"
-  }
+    link: "https://miverr-7ac31.web.app/",
+  },
 ];
 
 const Worked = () => {
@@ -37,9 +37,10 @@ const Worked = () => {
       <div className="max-w-6xl mx-auto">
         {/* Heading */}
         <div className="flex items-center gap-4 mb-12" data-aos="fade-right">
-          <h2 className="text-3xl font-bold text-orange-400 whitespace-nowrap">
+          <h2 className="text-3xl font-bold text-orange-400 whitespace-normal sm:whitespace-nowrap text-center sm:text-left">
             Things I've Worked on, Some of them
           </h2>
+
           <hr className="flex-grow border-t border-orange-600 opacity-60" />
         </div>
 
