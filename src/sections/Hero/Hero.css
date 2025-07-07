@@ -1,0 +1,28 @@
+/* Hero.css */
+
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.blur-3xl {
+  filter: blur(48px);
+}
+
+.transition-all {
+  transition-property: all;
+}
+
+.transition-transform {
+  transition-property: transform;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.ease-out {
+  transition-timing-function: ease-out;
+}
+
+/* You can add any extra custom styling here */

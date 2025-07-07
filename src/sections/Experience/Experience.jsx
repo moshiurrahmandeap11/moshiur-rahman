@@ -1,0 +1,115 @@
+import React, { useState, useRef, useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
+
+const experiences = [
+  {
+    id: 1,
+    header: "Frontend Developer at XYZ Corp",
+    date: "Jan 2021 - Present",
+    description:
+      "Built scalable React apps, improved UI performance, and collaborated with backend teams.",
+  },
+  {
+    id: 2,
+    header: "Full-Stack Intern at ABC Ltd",
+    date: "Jun 2020 - Dec 2020",
+    description:
+      "Worked on MERN stack projects, implemented REST APIs, and fixed bugs in production.",
+  },
+  {
+    id: 3,
+    header: "Junior Developer at DevStart",
+    date: "Jan 2019 - May 2020",
+    description:
+      "Assisted senior developers, wrote reusable components, and helped maintain legacy code.",
+  },
+];
+
+const Experience = () => {
+  const [activeId, setActiveId] = useState(experiences[0].id);
+  const tabsRef = useRef(null);
+  const [underlineStyle, setUnderlineStyle] = useState({});
+
+  useEffect(() => {
+    Aos.init({ duration: 800, easing: "ease-in-out", once: true });
+
+    if (!tabsRef.current) return;
+    const activeTab = tabsRef.current.querySelector(`[data-id='${activeId}']`);
+    if (activeTab) {
+      setUnderlineStyle({
+        width: activeTab.offsetWidth,
+        left: activeTab.offsetLeft,
+      });
+    }
+  }, [activeId]);
+
+  return (
+    <section className="h-screen bg-gradient-to-br from-[#0d1b2a] via-[#1b263b] to-[#415a77] text-gray-100 select-none flex flex-col justify-center items-center px-6">
+      {/* Header with hr line */}
+      <div
+        className="flex items-center gap-4 mb-8 w-full max-w-4xl"
+        data-aos="fade-right"
+      >
+        <h2 className="text-3xl font-bold text-orange-400 whitespace-nowrap">
+          My work experiences
+        </h2>
+        <hr className="flex-grow border-t border-orange-600 opacity-60" />
+      </div>
+
+      {/* Tabs container */}
+      <div
+        ref={tabsRef}
+        className="relative flex border-b border-gray-600 mb-8 space-x-8 overflow-x-auto max-w-4xl w-full scrollbar-hide"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        {experiences.map(({ id, header }) => (
+          <button
+            key={id}
+            data-id={id}
+            onClick={() => setActiveId(id)}
+            className={`relative text-lg py-2 font-semibold transition-colors duration-300 whitespace-nowrap ${
+              activeId === id
+                ? "text-orange-400"
+                : "text-gray-400 hover:text-orange-400"
+            }`}
+          >
+            {header}
+          </button>
+        ))}
+
+        {/* Sliding underline */}
+        <span
+          className="absolute bottom-0 h-1 bg-orange-400 rounded transition-all duration-300"
+          style={{
+            width: underlineStyle.width,
+            left: underlineStyle.left,
+          }}
+        />
+      </div>
+
+      {/* Experience Content */}
+      <div className="max-w-4xl w-full min-h-[180px] flex items-center justify-center px-4">
+        {experiences.map(({ id, header, date, description }, idx) => (
+          <div
+            key={id}
+            className={`transition-opacity duration-500 ${
+              activeId === id ? "opacity-100" : "opacity-0 hidden"
+            }`}
+            data-aos="fade-up"
+            data-aos-delay={200 + idx * 150}
+          >
+            <h3 className="text-2xl font-semibold text-orange-400 mb-2">
+              {header}
+            </h3>
+            <p className="text-sm italic text-gray-400 mb-4">{date}</p>
+            <p className="text-gray-300 leading-relaxed text-lg">{description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default Experience;
