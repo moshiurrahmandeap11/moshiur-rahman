@@ -3,10 +3,22 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import projectThumb from "../../assets/image1.png";
 import projectThumb1 from "../../assets/image2.png";
+import projectThumb2 from "../../assets/image3.png";
 
 const projects = [
   {
     id: 1,
+    featured: true,
+    title: "CodeCircle - Forum for Developers",
+    description:
+      "A community-driven forum platform built for developers. Features include real-time discussions, post upvoting, developer profiles, JWT-based authentication, and admin moderation tools. Fully responsive with smooth UI animations, designed to foster knowledge sharing among developers.",
+    tech: ["React", "Tailwind", "Node.js", "Express", "MongoDB", "JWT"],
+    image: projectThumb2,
+    link: "https://codecircle5.web.app/",
+  },
+
+  {
+    id: 2,
     featured: true,
     title: "Coursion – Online Course Platform",
     description:

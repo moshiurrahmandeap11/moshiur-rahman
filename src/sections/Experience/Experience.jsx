@@ -3,26 +3,26 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 
 const experiences = [
-  {
-    id: 1,
-    header: "Frontend Developer at XYZ Corp",
-    date: "Jan 2021 - Present",
-    description:
-      "Built scalable React apps, improved UI performance, and collaborated with backend teams.",
-  },
-  {
-    id: 2,
-    header: "Full-Stack Intern at ABC Ltd",
-    date: "Jun 2020 - Dec 2020",
-    description:
-      "Worked on MERN stack projects, implemented REST APIs, and fixed bugs in production.",
-  },
+  // {
+  //   id: 1,
+  //   header: "Frontend Developer at XYZ Corp",
+  //   date: "Jan 2021 - Present",
+  //   description:
+  //     "Built scalable React apps, improved UI performance, and collaborated with backend teams.",
+  // },
+  // {
+  //   id: 2,
+  //   header: "Full-Stack Intern at ABC Ltd",
+  //   date: "Jun 2020 - Dec 2020",
+  //   description:
+  //     "Worked on MERN stack projects, implemented REST APIs, and fixed bugs in production.",
+  // },
   {
     id: 3,
-    header: "Junior Developer at DevStart",
-    date: "Jan 2019 - May 2020",
+    header: "MERN Stack Developer at Projukty Sheba",
+    date: "2025 - Present",
     description:
-      "Assisted senior developers, wrote reusable components, and helped maintain legacy code.",
+      "Developing and maintaining modern web applications using MongoDB, Express.js, React.js, and Node.js. Responsible for creating responsive front-end designs, building RESTful APIs, and integrating third-party services. Collaborating with UI/UX designers to improve user experiences and ensuring scalable, secure backend architecture for client projects.",
   },
 ];
 
@@ -104,7 +104,9 @@ const Experience = () => {
               {header}
             </h3>
             <p className="text-sm italic text-gray-400 mb-4">{date}</p>
-            <p className="text-gray-300 leading-relaxed text-lg">{description}</p>
+            <p className="text-gray-300 leading-relaxed text-lg">
+              {description}
+            </p>
           </div>
         ))}
       </div>
