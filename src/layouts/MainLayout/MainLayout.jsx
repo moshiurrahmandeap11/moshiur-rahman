@@ -12,13 +12,14 @@ import {
 } from 'react-icons/fa';
 import axios from 'axios';
 
-// Import JSON data correctly from src/lib/moshiur.json
+// Import JSON data correctly
 import moshiurData from '../../../public/moshiur.json';
 
 const MainLayout = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [aiDisabled, setAiDisabled] = useState(false); // AI বন্ধ থাকলে ইনপুট বন্ধ করতে
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
 
@@ -29,7 +30,6 @@ const MainLayout = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
 
-    // Build system prompt with Moshiur data
     const systemPrompt = `You are an AI assistant that knows everything about Moshiur Rahman. Here's his data:\n${JSON.stringify(
       moshiurData
     )}\n\nOnly answer based on this information.`;
@@ -63,9 +63,10 @@ const MainLayout = () => {
         ...prev,
         {
           from: 'bot',
-          text: '⚠️ Sorry, something went wrong with the AI.',
+          text: '⚠️ AI is off during lack of API pricing',
         },
       ]);
+      setAiDisabled(true); // ইনপুট বন্ধ করুন
     }
   };
 
@@ -73,12 +74,12 @@ const MainLayout = () => {
     <div className="cursor-none relative">
       <CustomCursor />
 
-      {/* Top Nav */}
+      {/* Navbar */}
       <header className="shadow-md bg-transparent backdrop-blur-3xl sticky z-50 top-0">
         <Navbar />
       </header>
 
-      {/* Main Content */}
+      {/* Main content */}
       <main>
         <Outlet />
       </main>
@@ -88,40 +89,24 @@ const MainLayout = () => {
         <Footer />
       </footer>
 
-      {/* === Fixed Social Icons Left === */}
+      {/* Social Icons */}
       <div className="fixed bottom-0 left-6 z-50 hidden sm:flex flex-col items-center gap-4">
-        <a
-          href="https://github.com/moshiurrahmandeap11"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://github.com/moshiurrahmandeap11" target="_blank" rel="noopener noreferrer">
           <FaGithub className="text-white hover:text-orange-400 transition text-xl" />
         </a>
-        <a
-          href="https://instagram.com/__moshiur.rahman.deap"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://instagram.com/__moshiur.rahman.deap" target="_blank" rel="noopener noreferrer">
           <FaInstagram className="text-white hover:text-orange-400 transition text-xl" />
         </a>
-        <a
-          href="https://facebook.com/moshiurrahmandeap"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://facebook.com/moshiurrahmandeap" target="_blank" rel="noopener noreferrer">
           <FaFacebook className="text-white hover:text-orange-400 transition text-xl" />
         </a>
-        <a
-          href="https://www.linkedin.com/in/moshiurrahmandeap"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://www.linkedin.com/in/moshiurrahmandeap" target="_blank" rel="noopener noreferrer">
           <FaLinkedin className="text-white hover:text-orange-400 transition text-xl" />
         </a>
         <div className="w-px h-24 bg-white mt-2" />
       </div>
 
-      {/* === Fixed Email Right === */}
+      {/* Email Right */}
       <div className="fixed bottom-4 right-10 z-50 hidden sm:flex flex-col items-center gap-4">
         <a
           href="mailto:moshiurrahmandeap@gmail.com"
@@ -131,7 +116,7 @@ const MainLayout = () => {
         </a>
       </div>
 
-      {/* === AI Chatbot Button & UI === */}
+      {/* AI Chatbot Button */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={toggleChat}
@@ -141,7 +126,7 @@ const MainLayout = () => {
         </button>
       </div>
 
-      {/* Chat Box */}
+      {/* Chatbox UI */}
       {isChatOpen && (
         <div className="fixed bottom-20 right-6 z-50 w-80 max-w-[90vw] h-96 bg-white rounded-lg shadow-xl flex flex-col overflow-hidden border border-gray-300 transform transition-all duration-500 animate-fadeIn">
           <div className="bg-orange-500 text-white p-3 font-semibold text-center">
@@ -161,26 +146,30 @@ const MainLayout = () => {
               </div>
             ))}
           </div>
-          <div className="flex border-t">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Type your question..."
-              className="flex-1 p-2 outline-none text-sm"
-            />
-            <button
-              onClick={handleSend}
-              className="bg-orange-500 text-white px-4 text-sm transition hover:bg-orange-600"
-            >
-              Send
-            </button>
-          </div>
+
+          {/* Chat Input (conditionally rendered) */}
+          {!aiDisabled && (
+            <div className="flex border-t">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Type your question..."
+                className="flex-1 p-2 outline-none text-sm"
+              />
+              <button
+                onClick={handleSend}
+                className="bg-orange-500 text-white px-4 text-sm transition hover:bg-orange-600"
+              >
+                Send
+              </button>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Animation */}
+      {/* Chat Animation */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(5px); }
