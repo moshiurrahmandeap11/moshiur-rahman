@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import profilePic from "../../assets/profile.jpg";
 import { GiHamburgerMenu } from "react-icons/gi";
+import cv from "../../assets/moshiurcv.pdf"
 
 const menuItems = [
   { label: "Home", scrollToId: "hero", bg: "bg-orange-100" },
@@ -44,7 +45,7 @@ const Navbar = () => {
       <div className="flex items-center gap-4 relative">
         {/* CV Button */}
         <a
-          href="/cv.pdf"
+          href={cv}
           target="_blank"
           rel="noopener noreferrer"
           className="relative inline-block group text-black font-semibold px-4 py-2 border border-orange-400 rounded overflow-hidden text-sm"
