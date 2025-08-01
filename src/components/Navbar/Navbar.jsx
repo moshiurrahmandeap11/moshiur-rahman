@@ -89,7 +89,7 @@ const Navbar = () => {
         />
       </div>
 
-      <div className="flex items-center gap-4 relative">
+      <div className="flex items-center gap-2 relative">
         <div className="flex items-center gap-4">
           <div
             className="flex items-center gap-2 px-3 py-1 border border-yellow-300 rounded-full bg-yellow-100 shadow-sm hover:scale-105 transition-all cursor-pointer"
