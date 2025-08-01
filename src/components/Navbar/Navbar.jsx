@@ -90,7 +90,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-2 relative">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <div
             className="flex items-center gap-2 px-3 py-1 border border-yellow-300 rounded-full bg-yellow-100 shadow-sm hover:scale-105 transition-all cursor-pointer"
             onClick={openModal}
@@ -101,17 +101,25 @@ const Navbar = () => {
             </p>
           </div>
 
-          <a
-            href={cv}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative inline-block group text-black font-semibold px-4 py-2 border border-orange-400 rounded-full overflow-hidden text-sm hover:shadow-lg"
-          >
-            <span className="relative z-10 group-hover:text-white transition duration-300">
-              Curriculum Vitae
-            </span>
-            <span className="absolute left-0 bottom-0 w-full h-full bg-orange-400 z-0 transform scale-x-0 origin-bottom-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
-          </a>
+<a
+  href={cv}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="relative inline-block group text-black font-semibold px-4 py-2 border border-orange-400 rounded-full overflow-hidden text-sm hover:shadow-lg"
+>
+  {/* Full text for large screens */}
+  <span className="relative z-10 group-hover:text-white transition duration-300 hidden lg:inline">
+    Curriculum Vitae
+  </span>
+
+  {/* Short text for small screens */}
+  <span className="relative z-10 group-hover:text-white transition duration-300 inline lg:hidden">
+    CV
+  </span>
+
+  <span className="absolute left-0 bottom-0 w-full h-full bg-orange-400 z-0 transform scale-x-0 origin-bottom-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
+</a>
+
         </div>
 
         <button
