@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import profilePic from "../../assets/profile.jpg";
+import profilePic from "../../assets/pp.jpg";
 import shipWheel from "../../assets/wheel.webp";
 import Aos from "aos";
 import "aos/dist/aos.css";
