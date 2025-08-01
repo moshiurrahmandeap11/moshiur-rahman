@@ -19,7 +19,7 @@ const MainLayout = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [aiDisabled, setAiDisabled] = useState(false); // AI বন্ধ থাকলে ইনপুট বন্ধ করতে
+  const [aiDisabled, setAiDisabled] = useState(false);
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
 
@@ -45,10 +45,11 @@ const MainLayout = () => {
           ],
         },
         {
-          headers: {
-            Authorization: `Bearer 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`,
-            'Content-Type': 'application/json',
-          },
+headers: {
+  Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+  'Content-Type': 'application/json',
+},
+
         }
       );
 
