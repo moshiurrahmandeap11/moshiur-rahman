@@ -132,7 +132,7 @@ const MainLayout = () => {
     <div className="cursor-none relative">
       <CustomCursor />
 
-      <header className="shadow-md bg-transparent backdrop-blur-3xl sticky z-50 top-0">
+      <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 sticky z-50 top-0">
         <Navbar />
       </header>
 
