@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
+import Swal from "sweetalert2";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -41,7 +42,26 @@ const Blogs = () => {
 
   const handleLoveToggle = async (blogId) => {
     if (!firebaseUid) {
-      toast.error("You need to login to ❤️ a blog.");
+      Swal.fire({
+        icon: "warning",
+        title: "You need to be logged in to comment",
+        html: `Redirecting to login in <b>3</b> seconds...`,
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        didOpen: () => {
+          const b = Swal.getHtmlContainer().querySelector("b");
+          let count = 3;
+          const interval = setInterval(() => {
+            b.textContent = --count;
+            if (count === 0) clearInterval(interval);
+          }, 1000);
+          Swal.showLoading();
+        },
+      });
+      setTimeout(() => {
+        navigate("/login", { state: { from: location.pathname } });
+      }, 3000);
       return;
     }
 

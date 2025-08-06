@@ -30,6 +30,39 @@ const Admin = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [monthlyVisitors, setMonthlyVisitors] = useState(0);
+  
+
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/all-users");
+      setTotalUsers(res.data.users.length);
+    } catch (err) {
+      console.error("Error fetching users:", err.message);
+    }
+  };
+
+  fetchUsers();
+}, []);
+
+
+
+useEffect(() => {
+  const fetchVisitors = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/visitors/monthly");
+      setMonthlyVisitors(res.data.count);
+    } catch (err) {
+      console.error("Failed to fetch visitors", err);
+    }
+  };
+
+  fetchVisitors();
+}, []);
+
+
 
   useEffect(() => {
     Aos.init({ duration: 800, easing: "ease-in-out", once: true });
@@ -48,6 +81,8 @@ const Admin = () => {
       console.error("Failed to fetch reviews", err);
     }
   };
+
+
 
   const fetchBlogs = async () => {
     try {
@@ -234,13 +269,13 @@ const handleAddBlog = async () => {
                 <h2 className="text-lg font-semibold text-orange-300 mb-2">
                   Total Users
                 </h2>
-                <p className="text-3xl font-bold">1,245</p>
+                <p className="text-3xl font-bold">{totalUsers}</p>
               </div>
               <div className="bg-[#1e293b] p-5 rounded-lg shadow-lg hover:scale-105 transition-transform">
                 <h2 className="text-lg font-semibold text-orange-300 mb-2">
                   Monthly Visits
                 </h2>
-                <p className="text-3xl font-bold">58,200</p>
+                <p className="text-3xl font-bold">{monthlyVisitors}</p>
               </div>
               <div className="bg-[#1e293b] p-5 rounded-lg shadow-lg hover:scale-105 transition-transform">
                 <h2 className="text-lg font-semibold text-orange-300 mb-2">

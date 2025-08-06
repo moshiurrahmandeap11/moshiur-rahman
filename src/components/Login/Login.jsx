@@ -15,33 +15,54 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from || "/";
   
-  const handleEmailLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await login(email, password);
-      toast.success("Logged in successfully!");
-      navigate(from, { replace: true });
-    } catch (error) {
-      toast.error(error.message || "Failed to login");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleEmailLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const result = await login(email, password);
+    const loggedInEmail = result.user?.email;
 
-  // Google Login
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    try {
-      await googleLogin();
-      toast.success("Successfully Logged In")
+    toast.success("Logged in successfully!");
+
+    // 🔐 Admin email + specific password check
+    if (loggedInEmail === "admin@moshiurrahmandeap.com") {
+      if (password === "111110") {
+        navigate("/mrd-admin", { replace: true });
+      } else {
+        toast.error("Incorrect admin password.");
+        return; // 🛑 Stop navigation if password is wrong
+      }
+    } else {
       navigate(from, { replace: true });
-    } catch (error) {
-      toast.error("Google login failed: " + error.message);
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (error) {
+    toast.error(error.message || "Failed to login");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+const handleGoogleLogin = async () => {
+  setLoading(true);
+  try {
+    const result = await googleLogin();
+    const loggedInEmail = result.user?.email;
+
+    toast.success("Successfully Logged In");
+
+    if (loggedInEmail === "admin@moshiurrahmandeap.com") {
+      navigate("/mrd-admin", { replace: true });
+    } else {
+      navigate(from, { replace: true });
+    }
+  } catch (error) {
+    toast.error("Google login failed: " + error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4">

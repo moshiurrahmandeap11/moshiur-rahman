@@ -6,6 +6,7 @@ import Blogs from "../../components/Blogs/Blogs";
 import Blog from "../../components/Blog/Blog";
 import Login from "../../components/Login/Login";
 import SignUp from "../../components/SignUp/SignUp";
+import ProtectedRouteAdmin from "../../components/ProtectedRouteAdmin/ProtectedRouteAdmin";
 
 const router = createBrowserRouter([
     {
@@ -34,7 +35,9 @@ const router = createBrowserRouter([
             },
             {
                 path: "/mrd-admin",
-                element: <Admin></Admin>
+                element: <ProtectedRouteAdmin>
+                    <Admin></Admin>
+                </ProtectedRouteAdmin>
             }
         ]
         
