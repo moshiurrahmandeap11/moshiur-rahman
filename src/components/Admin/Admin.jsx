@@ -41,7 +41,7 @@ const Admin = () => {
   const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        "https://moshiur-rahman-server.onrender.com/reviews"
+        "http://localhost:3000/reviews"
       );
       setReviews(res.data.data || res.data);
     } catch (err) {
@@ -52,7 +52,7 @@ const Admin = () => {
   const fetchBlogs = async () => {
     try {
       const res = await axios.get(
-        "https://moshiur-rahman-server.onrender.com/blogs"
+        "http://localhost:3000/blogs"
       );
       setBlogs(res.data.data || res.data);
     } catch (err) {

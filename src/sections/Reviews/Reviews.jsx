@@ -21,7 +21,7 @@ const Reviews = () => {
  useEffect(() => {
   const fetchReviews = async () => {
     try {
-      const res = await axios.get("https://moshiur-rahman-server.onrender.com/reviews");
+      const res = await axios.get("http://localhost:3000/reviews");
       // Only include 5-star reviews
       const fiveStarOnly = (res.data || []).filter((r) => r.rating === 5);
       setReviews(fiveStarOnly);
