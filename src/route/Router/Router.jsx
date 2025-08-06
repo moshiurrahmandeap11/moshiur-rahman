@@ -4,6 +4,8 @@ import Home from "../../pages/Home/Home";
 import Admin from "../../components/Admin/Admin";
 import Blogs from "../../components/Blogs/Blogs";
 import Blog from "../../components/Blog/Blog";
+import Login from "../../components/Login/Login";
+import SignUp from "../../components/SignUp/SignUp";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
             {
                 path: "/blog/:id",
                 element: <Blog></Blog>
+            },
+            {
+                path: "/login",
+                element: <Login></Login>
+            },
+            {
+                path: "/signup",
+                element: <SignUp></SignUp>
             },
             {
                 path: "/mrd-admin",

@@ -23,7 +23,7 @@ const Blogs = () => {
     fetchBlogs();
   }, []);
 
-  const truncateContent = (content, wordLimit = 50) => {
+  const truncateContent = (content, wordLimit = 40) => {
     const words = content.split(" ");
     if (words.length <= wordLimit) return content;
     return words.slice(0, wordLimit).join(" ") + "...";
@@ -31,52 +31,55 @@ const Blogs = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white p-6"
+      className="min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white p-6"
       data-aos="fade-up"
     >
       <h1 className="text-4xl font-extrabold mb-8 text-orange-400 text-center">
         Latest Blogs
       </h1>
 
-      <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-col gap-8">
         {blogs.length === 0 ? (
-          <p className="text-center text-gray-400 col-span-full">Loading...</p>
+          <p className="text-center text-gray-400">Loading...</p>
         ) : (
           blogs.map(({ _id, thumbnail, title, content }) => (
-            <article
+            <div
               key={_id}
-              className="bg-gray-900 rounded-lg shadow-lg overflow-hidden flex flex-col"
+              onClick={() => navigate(`/blog/${_id}`)}
+              className="flex flex-col md:flex-row max-w-8/12 mx-auto bg-gray-900 rounded-lg shadow-lg overflow-hidden"
               data-aos="fade-up"
             >
-              {/* Thumbnail on top */}
+              {/* Thumbnail */}
               {thumbnail && (
                 <img
                   src={thumbnail}
                   alt={title}
-                  className="w-full h-48 object-cover"
+                  className="w-full md:w-64 h-64 object-cover"
                 />
               )}
 
-              <div className="p-5 flex flex-col flex-grow">
-                {/* Title */}
-                <h2 className="font-bold text-xl mb-3">{title}</h2>
+              {/* Text Content */}
+              <div className="p-6 flex flex-col justify-between flex-grow">
+                <div>
+                  <h2 className="text-2xl font-bold mb-3 text-orange-400">
+                    {title}
+                  </h2>
+                  <p className="text-gray-300 whitespace-pre-line">
+                    {truncateContent(content, 40)}
+                  </p>
+                </div>
 
-                {/* Content snippet */}
-                <p className="flex-grow text-gray-300 whitespace-pre-line mb-4">
-                  {truncateContent(content, 50)}
-                </p>
-
-                {/* Show More navigates to detailed blog */}
-                {content.split(" ").length > 50 && (
+                {/* Button */}
+                {content.split(" ").length > 40 && (
                   <button
                     onClick={() => navigate(`/blog/${_id}`)}
-                    className="self-start text-orange-400 hover:text-orange-600 transition font-semibold"
+                    className="mt-4 text-orange-400 hover:text-orange-600 transition font-semibold self-start"
                   >
-                    Show More
+                    See More →
                   </button>
                 )}
               </div>
-            </article>
+            </div>
           ))
         )}
       </div>
