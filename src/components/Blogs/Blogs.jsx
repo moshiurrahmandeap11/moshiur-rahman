@@ -19,7 +19,7 @@ const Blogs = () => {
 
     const fetchBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/blogs");
+        const res = await axios.get("https://moshiur-rahman-server.vercel.app/blogs");
         setBlogs(res.data.data || res.data);
       } catch (err) {
         console.error("Failed to fetch blogs", err);
@@ -66,7 +66,7 @@ const Blogs = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/loves", {
+      const res = await axios.post("https://moshiur-rahman-server.vercel.app/loves", {
         blogId,
         userId: firebaseUid,
       });

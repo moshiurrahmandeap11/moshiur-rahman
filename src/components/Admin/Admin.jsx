@@ -37,7 +37,7 @@ const Admin = () => {
 useEffect(() => {
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/all-users");
+      const res = await axios.get("https://moshiur-rahman-server.vercel.app/all-users");
       setTotalUsers(res.data.users.length);
     } catch (err) {
       console.error("Error fetching users:", err.message);
@@ -52,7 +52,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchVisitors = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/visitors/monthly");
+      const res = await axios.get("https://moshiur-rahman-server.vercel.app/visitors/monthly");
       setMonthlyVisitors(res.data.count);
     } catch (err) {
       console.error("Failed to fetch visitors", err);
@@ -74,7 +74,7 @@ useEffect(() => {
   const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/reviews"
+        "https://moshiur-rahman-server.vercel.app/reviews"
       );
       setReviews(res.data.data || res.data);
     } catch (err) {
@@ -87,7 +87,7 @@ useEffect(() => {
   const fetchBlogs = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/blogs"
+        "https://moshiur-rahman-server.vercel.app/blogs"
       );
       setBlogs(res.data.data || res.data);
     } catch (err) {
@@ -98,8 +98,8 @@ useEffect(() => {
   const fetchMeta = async () => {
     try {
       const [tagsRes, categoriesRes] = await Promise.all([
-        axios.get("http://localhost:3000/tags"),
-        axios.get("http://localhost:3000/categories"),
+        axios.get("https://moshiur-rahman-server.vercel.app/tags"),
+        axios.get("https://moshiur-rahman-server.vercel.app/categories"),
       ]);
       setTagsList(tagsRes.data);
       setCategories(categoriesRes.data);
@@ -132,7 +132,7 @@ const handleAddBlog = async () => {
   };
 
   try {
-    await axios.post("http://localhost:3000/blogs", blogPayload);
+    await axios.post("https://moshiur-rahman-server.vercel.app/blogs", blogPayload);
     setBlogTitle("");
     setThumbnail("");
     setSelectedTags([]);
@@ -534,7 +534,7 @@ const handleAddBlog = async () => {
                   onClick={async () => {
                     if (!blogTitle.trim()) return alert("Tag name required!");
                     try {
-                      await axios.post("http://localhost:3000/tags", {
+                      await axios.post("https://moshiur-rahman-server.vercel.app/tags", {
                         name: blogTitle,
                         createdAt: new Date().toISOString(),
                       });
@@ -605,7 +605,7 @@ const handleAddBlog = async () => {
                     if (!selectedCategory.trim())
                       return alert("Category name required!");
                     try {
-                      await axios.post("http://localhost:3000/categories", {
+                      await axios.post("https://moshiur-rahman-server.vercel.app/categories", {
                         name: selectedCategory,
                         createdAt: new Date().toISOString(),
                       });
