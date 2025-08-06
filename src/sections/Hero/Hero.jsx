@@ -93,7 +93,8 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-white via-orange-50 to-white">
+    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e]">
+
       {/* Fluid motion circle that stays inside the Hero section */}
       <div
         ref={circleRef}
@@ -110,7 +111,7 @@ const Hero = () => {
           {displayedText}
         </h4>
 
-        <p className="mt-6 text-gray-700 max-w-xl mx-auto">
+        <p className="mt-6 text-white/40 max-w-xl mx-auto">
           Passionate about building dynamic, responsive web apps with clean code
           & modern design. Always learning, always shipping.
         </p>

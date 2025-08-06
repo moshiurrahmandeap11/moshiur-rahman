@@ -13,7 +13,11 @@ const menuItems = [
   { label: "Experience", scrollToId: "experience", bg: "bg-yellow-100" },
   { label: "My Work", scrollToId: "worked", bg: "bg-green-100" },
   { label: "Reviews", scrollToId: "reviews", bg: "bg-blue-100" },
-  { label: "Certifications", scrollToId: "certifications", bg: "bg-purple-100" },
+  {
+    label: "Certifications",
+    scrollToId: "certifications",
+    bg: "bg-purple-100",
+  },
   { label: "Contact", scrollToId: "contact", bg: "bg-pink-100" },
 ];
 
@@ -40,7 +44,9 @@ const Navbar = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get("https://moshiur-rahman-server.onrender.com/reviews/stats");
+      const res = await axios.get(
+        "https://moshiur-rahman-server.onrender.com/reviews/stats"
+      );
       setReviewStats(res.data);
     } catch (err) {
       console.error("Error fetching review stats:", err);
@@ -66,7 +72,10 @@ const Navbar = () => {
     };
 
     try {
-      await axios.post("https://moshiur-rahman-server.onrender.com/reviews", reviewData);
+      await axios.post(
+        "https://moshiur-rahman-server.onrender.com/reviews",
+        reviewData
+      );
       setReview("");
       setName("");
       setEmail("");
@@ -83,8 +92,11 @@ const Navbar = () => {
     <div className="lg:w-11/12 mx-auto px-4 py-4 text-white flex items-center justify-between relative">
       <div className="flex items-center gap-2">
         <NavLink to={"/"}>
-
-        <img src={profilePic} alt="Profile" className="w-14 h-14 rounded-full object-cover" />
+          <img
+            src={profilePic}
+            alt="Profile"
+            className="w-14 h-14 rounded-full object-cover"
+          />
         </NavLink>
       </div>
 
@@ -92,11 +104,13 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           {/* Review Button */}
           <div
-            className="flex items-center gap-2 px-3 py-1 border border-yellow-300 rounded-full bg-yellow-100 shadow-sm hover:scale-105 transition-all cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1 border border-yellow-300 rounded-full  shadow-sm hover:scale-105 transition-all cursor-pointer"
             onClick={openModal}
           >
             <LiaStarSolid className="text-yellow-500" size={20} />
-            <p className="text-sm font-medium text-gray-800">({reviewStats.count})</p>
+            <p className="text-sm font-medium text-white">
+              ({reviewStats.count})
+            </p>
           </div>
 
           {/* Blogs Button */}
@@ -104,7 +118,7 @@ const Navbar = () => {
             href="/blogs"
             className="relative inline-block group text-black font-semibold px-4 py-2 border border-orange-400 rounded-full overflow-hidden text-sm hover:shadow-lg"
           >
-            <span className="relative z-10 group-hover:text-white transition duration-300 hidden lg:inline">
+            <span className="relative z-10 text-white group-hover:text-white transition duration-300 hidden lg:inline">
               Blogs
             </span>
             <span className="relative z-10 group-hover:text-white transition duration-300 inline lg:hidden">
@@ -118,7 +132,7 @@ const Navbar = () => {
             href={cv}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative inline-block group text-black font-semibold px-4 py-2 border border-orange-400 rounded-full overflow-hidden text-sm hover:shadow-lg"
+            className="relative inline-block group text-white font-semibold px-4 py-2 border border-orange-400 rounded-full overflow-hidden text-sm hover:shadow-lg"
           >
             <span className="relative z-10 group-hover:text-white transition duration-300 hidden lg:inline">
               Curriculum Vitae
@@ -133,11 +147,11 @@ const Navbar = () => {
         {/* Hamburger Menu */}
         <button
           onClick={toggleDropdown}
-          className={`p-2 cursor-pointer rounded-md border transition-transform duration-200 ${
-            open ? "rotate-90 scale-110 border-black" : "border-black"
+          className={`p-2 cursor-pointer rounded-md border  transition-transform duration-200 ${
+            open ? "rotate-90 scale-110 border-black" : "border-orange-400"
           }`}
         >
-          <GiHamburgerMenu size={24} className="text-black" />
+          <GiHamburgerMenu size={24} className="text-white " />
         </button>
 
         {/* Dropdown Nav */}
@@ -148,11 +162,11 @@ const Navbar = () => {
               : "scale-75 opacity-0 -rotate-12 pointer-events-none"
           }`}
         >
-          <ul className="overflow-hidden rounded-xl shadow-lg bg-white">
-            {menuItems.map(({ label, bg, scrollToId }, i) => (
+          <ul className="overflow-hidden rounded-xl shadow-lg bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
+            {menuItems.map(({ label, scrollToId }, i) => (
               <li
                 key={i}
-                className={`${bg} px-5 py-3 text-sm font-medium text-gray-800 hover:bg-opacity-90 transition-all cursor-pointer border-b`}
+                className="px-5 py-3 text-sm font-medium text-white hover:bg-opacity-80 transition-all cursor-pointer border-b border-gray-600"
                 onClick={() => scrollToSection(scrollToId)}
               >
                 {label}
