@@ -7,6 +7,7 @@ import Blog from "../../components/Blog/Blog";
 import Login from "../../components/Login/Login";
 import SignUp from "../../components/SignUp/SignUp";
 import ProtectedRouteAdmin from "../../components/ProtectedRouteAdmin/ProtectedRouteAdmin";
+import EditBlogModal from "../../components/EditBlogModal/EditBlogModal";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "/signup",
                 element: <SignUp></SignUp>
+            },
+            {
+                path: "/edit-blog/:id",
+                element: <EditBlogModal></EditBlogModal>
             },
             {
                 path: "/mrd-admin",

@@ -64,7 +64,7 @@ const Navbar = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get("https://moshiur-rahman-server.vercel.app/reviews/stats");
+      const res = await axios.get("http://localhost:3000/reviews/stats");
       setReviewStats(res.data);
     } catch (err) {
       console.error("Error fetching review stats:", err);
@@ -90,7 +90,7 @@ const Navbar = () => {
     };
 
     try {
-      await axios.post("https://moshiur-rahman-server.vercel.app/reviews", reviewData);
+      await axios.post("http://localhost:3000/reviews", reviewData);
       setReview("");
       setName("");
       setEmail("");

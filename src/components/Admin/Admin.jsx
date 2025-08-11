@@ -1,5 +1,5 @@
 // Admin.jsx
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useContext } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
@@ -9,13 +9,21 @@ import {
   FaEdit,
   FaPlus,
   FaSignOutAlt,
+  FaRegEye,
 } from "react-icons/fa";
 import { Dialog, Transition } from "@headlessui/react";
 import toast from "react-hot-toast";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html"; // for converting to HTML
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/js/plugins.pkgd.min.js';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/plugins.pkgd.min.css';
+// ...existing code...
+import Swal from "sweetalert2";
+import { DeleteIcon } from "lucide-react";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../../contexts/AuthContext/AuthContext";
+
 
 const Admin = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -27,40 +35,14 @@ const Admin = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [tagsList, setTagsList] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [monthlyVisitors, setMonthlyVisitors] = useState(0);
-  
+const [content, setContent] = useState("");
+const {logout} = useContext(AuthContext)
 
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get("https://moshiur-rahman-server.vercel.app/all-users");
-      setTotalUsers(res.data.users.length);
-    } catch (err) {
-      console.error("Error fetching users:", err.message);
-    }
-  };
+  const navigate = useNavigate();
 
-  fetchUsers();
-}, []);
-
-
-
-useEffect(() => {
-  const fetchVisitors = async () => {
-    try {
-      const res = await axios.get("https://moshiur-rahman-server.vercel.app/visitors/monthly");
-      setMonthlyVisitors(res.data.count);
-    } catch (err) {
-      console.error("Failed to fetch visitors", err);
-    }
-  };
-
-  fetchVisitors();
-}, []);
 
 
 
@@ -74,7 +56,7 @@ useEffect(() => {
   const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        "https://moshiur-rahman-server.vercel.app/reviews"
+        "http://localhost:3000/reviews"
       );
       setReviews(res.data.data || res.data);
     } catch (err) {
@@ -87,7 +69,7 @@ useEffect(() => {
   const fetchBlogs = async () => {
     try {
       const res = await axios.get(
-        "https://moshiur-rahman-server.vercel.app/blogs"
+        "http://localhost:3000/blogs"
       );
       setBlogs(res.data.data || res.data);
     } catch (err) {
@@ -98,8 +80,8 @@ useEffect(() => {
   const fetchMeta = async () => {
     try {
       const [tagsRes, categoriesRes] = await Promise.all([
-        axios.get("https://moshiur-rahman-server.vercel.app/tags"),
-        axios.get("https://moshiur-rahman-server.vercel.app/categories"),
+        axios.get("http://localhost:3000/tags"),
+        axios.get("http://localhost:3000/categories"),
       ]);
       setTagsList(tagsRes.data);
       setCategories(categoriesRes.data);
@@ -108,23 +90,36 @@ useEffect(() => {
     }
   };
 
-const handleAddBlog = async () => {
-  const contentBlocks = convertToRaw(editorState.getCurrentContent()).blocks;
-  const hasContent = contentBlocks.some((block) => block.text.trim() !== "");
+const handleAddBlog = async ({
+  blogTitle,
+  thumbnail,
+  selectedTags,
+  selectedCategory,
+  contentHTML, // This is Jodit's HTML output
+  setBlogTitle,
+  setThumbnail,
+  setSelectedTags,
+  setSelectedCategory,
+  setContentHTML, // setter for Jodit content
+  fetchBlogs,
+  setActiveSection
+}) => {
+  // Validation
+if (
+  !blogTitle?.trim() ||
+  !thumbnail?.trim() ||
+  !selectedCategory?.trim() ||
+  !contentHTML?.trim()
+) {
+  toast.error("Please fill all required fields.");
+  return;
+}
 
-  if (
-    !blogTitle.trim() ||
-    !thumbnail.trim() ||
-    !selectedCategory ||
-    !hasContent
-  ) {
-    alert("Please fill all required fields.");
-    return;
-  }
 
+  // Payload for backend
   const blogPayload = {
     title: blogTitle,
-    content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+    content: contentHTML, // Directly send HTML from Jodit
     thumbnail,
     tags: selectedTags,
     category: selectedCategory,
@@ -132,14 +127,19 @@ const handleAddBlog = async () => {
   };
 
   try {
-    await axios.post("https://moshiur-rahman-server.vercel.app/blogs", blogPayload);
+    await axios.post("http://localhost:3000/blogs", blogPayload);
+
+    // Reset fields
     setBlogTitle("");
     setThumbnail("");
     setSelectedTags([]);
     setSelectedCategory("");
-    setEditorState(EditorState.createEmpty());
+    setContentHTML(""); // reset Jodit editor
     setActiveSection("dashboard");
-    fetchBlogs();
+
+    // Refetch blogs list
+    if (fetchBlogs) fetchBlogs();
+
     toast.success("Blog added successfully!");
   } catch (err) {
     console.error("Failed to post blog", err);
@@ -149,12 +149,75 @@ const handleAddBlog = async () => {
 
 
 
-  const handleDeleteReview = (id) => {
-    alert("deleted", id);
+  const handleDeleteReview = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#f97316", // orange-ish
+      cancelButtonColor: "#6b7280", // gray-ish
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/reviews/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setReviews((prev) => prev.filter((review) => review._id !== id));
+        toast.success("Review deleted successfully ✅");
+      } else {
+        toast.error(data.message || "Failed to delete review ❌");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong ❌");
+    }
   };
 
+  const handleShowPost = (id) => {
+    navigate(`/blog/${id}`)
+  }
+
+  const handleDeleteBlog = async (id) => {
+    if (!id) return;
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#f43f5e", // Tailwind's red-500
+      cancelButtonColor: "#6b7280", // Tailwind's gray-500
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const res = await axios.delete(`http://localhost:3000/blogs/${id}`);
+
+      if (res.status === 200) {
+        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
+        Swal.fire("Deleted!", "Your blog has been deleted.", "success");
+      } else {
+        Swal.fire("Oops!", "Failed to delete the blog.", "error");
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      Swal.fire("Error!", "Something went wrong while deleting.", "error");
+    }
+  };
+
+
   const handleLogout = () => {
-    alert("Logged out!");
+    logout();
   };
 
   return (
@@ -169,81 +232,73 @@ const handleAddBlog = async () => {
         <nav className="flex flex-col gap-5">
           <button
             onClick={() => setActiveSection("dashboard")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "dashboard"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "dashboard"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaChartBar /> Dashboard
           </button>
           <button
             onClick={() => setActiveSection("reviews")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "reviews"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "reviews"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaStar /> Reviews
           </button>
           <button
             onClick={() => setActiveSection("manageBlogs")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "manageBlogs"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "manageBlogs"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaEdit /> Manage Blogs
           </button>
           <button
             onClick={() => setActiveSection("addBlog")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "addBlog"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "addBlog"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaPlus /> Add Blog
           </button>
           <button
             onClick={() => setActiveSection("addTag")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "addTag"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "addTag"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaPlus /> Add Tag
           </button>
           <button
             onClick={() => setActiveSection("manageTags")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "manageTags"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "manageTags"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaEdit /> Manage Tags
           </button>
           <button
             onClick={() => setActiveSection("addCategory")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "addCategory"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "addCategory"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaPlus /> Add Category
           </button>
           <button
             onClick={() => setActiveSection("manageCategories")}
-            className={`flex items-center gap-3 px-3 py-2 rounded ${
-              activeSection === "manageCategories"
-                ? "bg-orange-500"
-                : "hover:bg-orange-600"
-            } transition`}
+            className={`flex items-center gap-3 px-3 py-2 rounded ${activeSection === "manageCategories"
+              ? "bg-orange-500"
+              : "hover:bg-orange-600"
+              } transition`}
           >
             <FaEdit /> Manage Category
           </button>
@@ -264,26 +319,6 @@ const handleAddBlog = async () => {
             <h1 className="text-3xl font-bold text-orange-400">
               Dashboard Overview
             </h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-[#1e293b] p-5 rounded-lg shadow-lg hover:scale-105 transition-transform">
-                <h2 className="text-lg font-semibold text-orange-300 mb-2">
-                  Total Users
-                </h2>
-                <p className="text-3xl font-bold">{totalUsers}</p>
-              </div>
-              <div className="bg-[#1e293b] p-5 rounded-lg shadow-lg hover:scale-105 transition-transform">
-                <h2 className="text-lg font-semibold text-orange-300 mb-2">
-                  Monthly Visits
-                </h2>
-                <p className="text-3xl font-bold">{monthlyVisitors}</p>
-              </div>
-              <div className="bg-[#1e293b] p-5 rounded-lg shadow-lg hover:scale-105 transition-transform">
-                <h2 className="text-lg font-semibold text-orange-300 mb-2">
-                  Revenue
-                </h2>
-                <p className="text-3xl font-bold">$12,540</p>
-              </div>
-            </div>
           </section>
         )}
         {/* Reviews */}
@@ -385,7 +420,7 @@ const handleAddBlog = async () => {
                     blogs.map(({ _id, title, createdAt }) => (
                       <tr
                         key={_id}
-                        className="border-b border-gray-700 hover:bg-[#334155]"
+                        className="border-b border-gray-700"
                       >
                         <td className="py-2 px-3 border border-gray-700">
                           {title}
@@ -393,16 +428,38 @@ const handleAddBlog = async () => {
                         <td className="py-2 px-3 border border-gray-700">
                           {new Date(createdAt).toLocaleDateString()}
                         </td>
-                        <td className="py-2 px-3 border border-gray-700">
-                          {/* Add edit/delete actions here later */}
+                        <td className="py-2 px-3 border border-gray-700 flex gap-2 justify-center">
                           <button
-                            disabled
-                            className="bg-gray-500 cursor-not-allowed text-white px-3 py-1 rounded text-sm"
-                            title="Coming soon"
+                            className="bg-gray-500 text-white px-4 py-2 rounded text-base flex items-center justify-center
+               transition-transform duration-300 ease-in-out hover:scale-110 hover:bg-gray-600
+               bg-pulse"
+                            title="edit blog"
+                            onClick={() => navigate(`/edit-blog/${_id}`)}
                           >
-                            Edit
+                            <FaEdit size={24} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteBlog(_id)}
+                            className="bg-gray-500 text-white px-4 py-2 rounded text-base flex items-center justify-center
+               transition-transform duration-300 ease-in-out hover:scale-110 hover:bg-red-600
+               bg-pulse"
+                            title="Delete blog"
+                          >
+                            <DeleteIcon style={{ fontSize: 24 }} />
+                          </button>
+                          <button
+                            onClick={() => handleShowPost(_id)}
+                            className="bg-gray-500 text-white px-4 py-2 rounded text-base flex items-center justify-center
+               transition-transform duration-300 ease-in-out hover:scale-110 hover:bg-green-600
+               bg-pulse"
+                            title="Show post"
+                          >
+                            <FaRegEye size={24} />
                           </button>
                         </td>
+
+
+
                       </tr>
                     ))
                   )}
@@ -427,14 +484,40 @@ const handleAddBlog = async () => {
               />
 
               <div className="mb-3 bg-white rounded-md">
-                <Editor
-                  editorState={editorState}
-                  onEditorStateChange={setEditorState}
-                  wrapperClassName="demo-wrapper"
-                  editorClassName="p-4 bg-white text-black min-h-[200px] lg:min-h-[600px]"
-                  toolbarClassName="border border-gray-300"
-                  placeholder="Write your blog content here..."
-                />
+<div className="mb-3 bg-white text-black rounded-md">
+<FroalaEditorComponent
+  tag='textarea'
+  model={content}
+  onModelChange={setContent}
+  config={{
+    height: 400,
+    toolbarButtons: {
+      moreText: [
+        'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript',
+        'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle'
+      ],
+      moreParagraph: [
+        'alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOL', 'formatUL',
+        'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote'
+      ],
+      moreRich: [
+        'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'specialCharacters',
+        'insertFile', 'insertHR'
+      ],
+      moreMisc: [
+        'undo', 'redo', 'clearFormatting', 'selectAll', 'html', 'fullscreen', 'print', 'help'
+      ]
+    },
+    pluginsEnabled: [
+      'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons',
+      'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager',
+      'inlineClass', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat',
+      'paragraphStyle', 'print', 'quickInsert', 'quote', 'table', 'url', 'video', 'wordPaste', 'specialCharacters'
+    ]
+  }}
+/>
+</div>
+
               </div>
 
               <input
@@ -461,11 +544,10 @@ const handleAddBlog = async () => {
                             : [...prev, tag.name]
                         )
                       }
-                      className={`px-3 py-1 rounded-full text-sm border ${
-                        selectedTags.includes(tag.name)
-                          ? "bg-orange-500 text-white border-orange-500"
-                          : "bg-[#334155] text-white border-gray-600"
-                      }`}
+                      className={`px-3 py-1 rounded-full text-sm border ${selectedTags.includes(tag.name)
+                        ? "bg-orange-500 text-white border-orange-500"
+                        : "bg-[#334155] text-white border-gray-600"
+                        }`}
                     >
                       {tag.name}
                     </button>
@@ -498,12 +580,29 @@ const handleAddBlog = async () => {
                 >
                   Cancel
                 </button>
-                <button
-                  onClick={handleAddBlog}
-                  className="px-4 py-2 bg-orange-500 rounded text-white hover:bg-orange-600"
-                >
-                  Submit
-                </button>
+
+<button
+  onClick={() =>
+    handleAddBlog({
+      blogTitle,
+      thumbnail,
+      selectedTags,
+      selectedCategory,
+      contentHTML: content, // use your Jodit editor state
+      setBlogTitle,
+      setThumbnail,
+      setSelectedTags,
+      setSelectedCategory,
+      setContentHTML: setContent,
+      fetchBlogs,
+      setActiveSection,
+    })
+  }
+  className="px-4 py-2 bg-orange-500 rounded text-white hover:bg-orange-600"
+>
+  Submit
+</button>
+
               </div>
             </div>
           </section>
@@ -534,7 +633,7 @@ const handleAddBlog = async () => {
                   onClick={async () => {
                     if (!blogTitle.trim()) return alert("Tag name required!");
                     try {
-                      await axios.post("https://moshiur-rahman-server.vercel.app/tags", {
+                      await axios.post("http://localhost:3000/tags", {
                         name: blogTitle,
                         createdAt: new Date().toISOString(),
                       });
@@ -605,7 +704,7 @@ const handleAddBlog = async () => {
                     if (!selectedCategory.trim())
                       return alert("Category name required!");
                     try {
-                      await axios.post("https://moshiur-rahman-server.vercel.app/categories", {
+                      await axios.post("http://localhost:3000/categories", {
                         name: selectedCategory,
                         createdAt: new Date().toISOString(),
                       });
