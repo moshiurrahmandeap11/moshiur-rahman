@@ -18,7 +18,6 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/plugins.pkgd.min.css';
-// ...existing code...
 import Swal from "sweetalert2";
 import { DeleteIcon } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -38,8 +37,8 @@ const Admin = () => {
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-const [content, setContent] = useState("");
-const {logout} = useContext(AuthContext)
+  const [content, setContent] = useState("");
+  const { logout } = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -56,7 +55,7 @@ const {logout} = useContext(AuthContext)
   const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/reviews"
+        "https://moshiur-rahman-server.vercel.app/reviews"
       );
       setReviews(res.data.data || res.data);
     } catch (err) {
@@ -69,7 +68,7 @@ const {logout} = useContext(AuthContext)
   const fetchBlogs = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/blogs"
+        "https://moshiur-rahman-server.vercel.app/blogs"
       );
       setBlogs(res.data.data || res.data);
     } catch (err) {
@@ -80,8 +79,8 @@ const {logout} = useContext(AuthContext)
   const fetchMeta = async () => {
     try {
       const [tagsRes, categoriesRes] = await Promise.all([
-        axios.get("http://localhost:3000/tags"),
-        axios.get("http://localhost:3000/categories"),
+        axios.get("https://moshiur-rahman-server.vercel.app/tags"),
+        axios.get("https://moshiur-rahman-server.vercel.app/categories"),
       ]);
       setTagsList(tagsRes.data);
       setCategories(categoriesRes.data);
@@ -90,62 +89,62 @@ const {logout} = useContext(AuthContext)
     }
   };
 
-const handleAddBlog = async ({
-  blogTitle,
-  thumbnail,
-  selectedTags,
-  selectedCategory,
-  contentHTML, // This is Jodit's HTML output
-  setBlogTitle,
-  setThumbnail,
-  setSelectedTags,
-  setSelectedCategory,
-  setContentHTML, // setter for Jodit content
-  fetchBlogs,
-  setActiveSection
-}) => {
-  // Validation
-if (
-  !blogTitle?.trim() ||
-  !thumbnail?.trim() ||
-  !selectedCategory?.trim() ||
-  !contentHTML?.trim()
-) {
-  toast.error("Please fill all required fields.");
-  return;
-}
-
-
-  // Payload for backend
-  const blogPayload = {
-    title: blogTitle,
-    content: contentHTML, // Directly send HTML from Jodit
+  const handleAddBlog = async ({
+    blogTitle,
     thumbnail,
-    tags: selectedTags,
-    category: selectedCategory,
-    createdAt: new Date().toISOString(),
+    selectedTags,
+    selectedCategory,
+    contentHTML,
+    setBlogTitle,
+    setThumbnail,
+    setSelectedTags,
+    setSelectedCategory,
+    setContentHTML,
+    fetchBlogs,
+    setActiveSection
+  }) => {
+    // Validation
+    if (
+      !blogTitle?.trim() ||
+      !thumbnail?.trim() ||
+      !selectedCategory?.trim() ||
+      !contentHTML?.trim()
+    ) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
+
+
+    // Payload for backend
+    const blogPayload = {
+      title: blogTitle,
+      content: contentHTML,
+      thumbnail,
+      tags: selectedTags,
+      category: selectedCategory,
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      await axios.post("https://moshiur-rahman-server.vercel.app/blogs", blogPayload);
+
+      // Reset fields
+      setBlogTitle("");
+      setThumbnail("");
+      setSelectedTags([]);
+      setSelectedCategory("");
+      setContentHTML("");
+      setActiveSection("dashboard");
+
+      // Refetch blogs list
+      if (fetchBlogs) fetchBlogs();
+
+      toast.success("Blog added successfully!");
+    } catch (err) {
+      console.error("Failed to post blog", err);
+      toast.error("Failed to add blog.");
+    }
   };
-
-  try {
-    await axios.post("http://localhost:3000/blogs", blogPayload);
-
-    // Reset fields
-    setBlogTitle("");
-    setThumbnail("");
-    setSelectedTags([]);
-    setSelectedCategory("");
-    setContentHTML(""); // reset Jodit editor
-    setActiveSection("dashboard");
-
-    // Refetch blogs list
-    if (fetchBlogs) fetchBlogs();
-
-    toast.success("Blog added successfully!");
-  } catch (err) {
-    console.error("Failed to post blog", err);
-    toast.error("Failed to add blog.");
-  }
-};
 
 
 
@@ -155,15 +154,15 @@ if (
       text: "You won’t be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#f97316", // orange-ish
-      cancelButtonColor: "#6b7280", // gray-ish
+      confirmButtonColor: "#f97316",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, delete it!",
     });
 
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/reviews/${id}`, {
+      const res = await fetch(`https://moshiur-rahman-server.vercel.app/reviews/${id}`, {
         method: "DELETE",
       });
 
@@ -193,15 +192,15 @@ if (
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#f43f5e", // Tailwind's red-500
-      cancelButtonColor: "#6b7280", // Tailwind's gray-500
+      confirmButtonColor: "#f43f5e",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, delete it!",
     });
 
     if (!result.isConfirmed) return;
 
     try {
-      const res = await axios.delete(`http://localhost:3000/blogs/${id}`);
+      const res = await axios.delete(`https://moshiur-rahman-server.vercel.app/blogs/${id}`);
 
       if (res.status === 200) {
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
@@ -484,39 +483,39 @@ if (
               />
 
               <div className="mb-3 bg-white rounded-md">
-<div className="mb-3 bg-white text-black rounded-md">
-<FroalaEditorComponent
-  tag='textarea'
-  model={content}
-  onModelChange={setContent}
-  config={{
-    height: 400,
-    toolbarButtons: {
-      moreText: [
-        'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript',
-        'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle'
-      ],
-      moreParagraph: [
-        'alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOL', 'formatUL',
-        'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote'
-      ],
-      moreRich: [
-        'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'specialCharacters',
-        'insertFile', 'insertHR'
-      ],
-      moreMisc: [
-        'undo', 'redo', 'clearFormatting', 'selectAll', 'html', 'fullscreen', 'print', 'help'
-      ]
-    },
-    pluginsEnabled: [
-      'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons',
-      'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager',
-      'inlineClass', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat',
-      'paragraphStyle', 'print', 'quickInsert', 'quote', 'table', 'url', 'video', 'wordPaste', 'specialCharacters'
-    ]
-  }}
-/>
-</div>
+                <div className="mb-3 bg-white text-black rounded-md">
+                  <FroalaEditorComponent
+                    tag='textarea'
+                    model={content}
+                    onModelChange={setContent}
+                    config={{
+                      height: 400,
+                      toolbarButtons: {
+                        moreText: [
+                          'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript',
+                          'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle'
+                        ],
+                        moreParagraph: [
+                          'alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOL', 'formatUL',
+                          'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote'
+                        ],
+                        moreRich: [
+                          'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'specialCharacters',
+                          'insertFile', 'insertHR'
+                        ],
+                        moreMisc: [
+                          'undo', 'redo', 'clearFormatting', 'selectAll', 'html', 'fullscreen', 'print', 'help'
+                        ]
+                      },
+                      pluginsEnabled: [
+                        'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons',
+                        'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager',
+                        'inlineClass', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat',
+                        'paragraphStyle', 'print', 'quickInsert', 'quote', 'table', 'url', 'video', 'wordPaste', 'specialCharacters'
+                      ]
+                    }}
+                  />
+                </div>
 
               </div>
 
@@ -581,27 +580,27 @@ if (
                   Cancel
                 </button>
 
-<button
-  onClick={() =>
-    handleAddBlog({
-      blogTitle,
-      thumbnail,
-      selectedTags,
-      selectedCategory,
-      contentHTML: content, // use your Jodit editor state
-      setBlogTitle,
-      setThumbnail,
-      setSelectedTags,
-      setSelectedCategory,
-      setContentHTML: setContent,
-      fetchBlogs,
-      setActiveSection,
-    })
-  }
-  className="px-4 py-2 bg-orange-500 rounded text-white hover:bg-orange-600"
->
-  Submit
-</button>
+                <button
+                  onClick={() =>
+                    handleAddBlog({
+                      blogTitle,
+                      thumbnail,
+                      selectedTags,
+                      selectedCategory,
+                      contentHTML: content, // use your Jodit editor state
+                      setBlogTitle,
+                      setThumbnail,
+                      setSelectedTags,
+                      setSelectedCategory,
+                      setContentHTML: setContent,
+                      fetchBlogs,
+                      setActiveSection,
+                    })
+                  }
+                  className="px-4 py-2 bg-orange-500 rounded text-white hover:bg-orange-600"
+                >
+                  Submit
+                </button>
 
               </div>
             </div>
@@ -633,7 +632,7 @@ if (
                   onClick={async () => {
                     if (!blogTitle.trim()) return alert("Tag name required!");
                     try {
-                      await axios.post("http://localhost:3000/tags", {
+                      await axios.post("https://moshiur-rahman-server.vercel.app/tags", {
                         name: blogTitle,
                         createdAt: new Date().toISOString(),
                       });
@@ -704,7 +703,7 @@ if (
                     if (!selectedCategory.trim())
                       return alert("Category name required!");
                     try {
-                      await axios.post("http://localhost:3000/categories", {
+                      await axios.post("https://moshiur-rahman-server.vercel.app/categories", {
                         name: selectedCategory,
                         createdAt: new Date().toISOString(),
                       });

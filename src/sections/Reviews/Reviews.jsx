@@ -17,7 +17,7 @@ const Reviews = () => {
     const fetchReviews = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/reviews"
+          "https://moshiur-rahman-server.vercel.app/reviews"
         );
         // শুধুমাত্র ৫ স্টার রেটিং এর রিভিউগুলো দেখানো হচ্ছে
         const fiveStarOnly = (res.data || []).filter((r) => r.rating === 5);

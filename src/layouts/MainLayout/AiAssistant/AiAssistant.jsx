@@ -14,7 +14,7 @@ const AiAssistant = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_BASE_URL = "http://localhost:3000/api";
+  const API_BASE_URL = "https://moshiur-rahman-server.vercel.app/api";
 
   const fetchChatSessions = async () => {
     try {

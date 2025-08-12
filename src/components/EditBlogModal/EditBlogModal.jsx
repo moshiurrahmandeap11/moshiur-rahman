@@ -25,7 +25,7 @@ const EditBlogPage = () => {
     // Fetch blog by ID
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/blogs/${id}`);
+        const res = await axios.get(`https://moshiur-rahman-server.vercel.app/blogs/${id}`);
         if (res.data.success) {
           const blog = res.data.data;
           setBlogTitle(blog.title || "");
@@ -46,8 +46,8 @@ const EditBlogPage = () => {
     // Fetch tags and categories
     const fetchTagsAndCategories = async () => {
       try {
-        const tagsRes = await axios.get("http://localhost:3000/tags");
-        const catsRes = await axios.get("http://localhost:3000/categories");
+        const tagsRes = await axios.get("https://moshiur-rahman-server.vercel.app/tags");
+        const catsRes = await axios.get("https://moshiur-rahman-server.vercel.app/categories");
         setAllTags(tagsRes.data || []);
         setAllCategories(catsRes.data || []);
       } catch {
@@ -73,7 +73,7 @@ const EditBlogPage = () => {
     }
 
     try {
-      await axios.put(`http://localhost:3000/blogs/${id}`, {
+      await axios.put(`https://moshiur-rahman-server.vercel.app/blogs/${id}`, {
         title: blogTitle,
         thumbnail,
         tags: selectedTags,
@@ -131,7 +131,7 @@ const EditBlogPage = () => {
                 'inlineClass', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat',
                 'paragraphStyle', 'print', 'quickInsert', 'quote', 'table', 'url', 'video', 'wordPaste', 'specialCharacters'
               ],
-              imageUploadURL: "http://localhost:3000/froala-upload", // Backend endpoint
+              imageUploadURL: "https://moshiur-rahman-server.vercel.app/froala-upload", // Backend endpoint
               imageUploadParam: "file",
               imageAllowedTypes: ["jpeg", "jpg", "png", "gif"],
               imageMaxSize: 5 * 1024 * 1024 // 5MB
