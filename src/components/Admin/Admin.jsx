@@ -56,7 +56,7 @@ const {logout} = useContext(AuthContext)
   const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/reviews"
+        "https://moshiur-rahman-server.vercel.app/reviews"
       );
       setReviews(res.data.data || res.data);
     } catch (err) {
@@ -69,7 +69,7 @@ const {logout} = useContext(AuthContext)
   const fetchBlogs = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/blogs"
+        "https://moshiur-rahman-server.vercel.app/blogs"
       );
       setBlogs(res.data.data || res.data);
     } catch (err) {
@@ -80,8 +80,8 @@ const {logout} = useContext(AuthContext)
   const fetchMeta = async () => {
     try {
       const [tagsRes, categoriesRes] = await Promise.all([
-        axios.get("http://localhost:3000/tags"),
-        axios.get("http://localhost:3000/categories"),
+        axios.get("https://moshiur-rahman-server.vercel.app/tags"),
+        axios.get("https://moshiur-rahman-server.vercel.app/categories"),
       ]);
       setTagsList(tagsRes.data);
       setCategories(categoriesRes.data);
@@ -127,7 +127,7 @@ if (
   };
 
   try {
-    await axios.post("http://localhost:3000/blogs", blogPayload);
+    await axios.post("https://moshiur-rahman-server.vercel.app/blogs", blogPayload);
 
     // Reset fields
     setBlogTitle("");
@@ -163,7 +163,7 @@ if (
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/reviews/${id}`, {
+      const res = await fetch(`https://moshiur-rahman-server.vercel.app/reviews/${id}`, {
         method: "DELETE",
       });
 
@@ -201,7 +201,7 @@ if (
     if (!result.isConfirmed) return;
 
     try {
-      const res = await axios.delete(`http://localhost:3000/blogs/${id}`);
+      const res = await axios.delete(`https://moshiur-rahman-server.vercel.app/blogs/${id}`);
 
       if (res.status === 200) {
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
@@ -633,7 +633,7 @@ if (
                   onClick={async () => {
                     if (!blogTitle.trim()) return alert("Tag name required!");
                     try {
-                      await axios.post("http://localhost:3000/tags", {
+                      await axios.post("https://moshiur-rahman-server.vercel.app/tags", {
                         name: blogTitle,
                         createdAt: new Date().toISOString(),
                       });
@@ -704,7 +704,7 @@ if (
                     if (!selectedCategory.trim())
                       return alert("Category name required!");
                     try {
-                      await axios.post("http://localhost:3000/categories", {
+                      await axios.post("https://moshiur-rahman-server.vercel.app/categories", {
                         name: selectedCategory,
                         createdAt: new Date().toISOString(),
                       });

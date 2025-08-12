@@ -19,7 +19,7 @@ const AiAssistant = () => {
 
   const fetchAiHistory = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/ai-history");
+      const res = await axios.get("https://moshiur-rahman-server.vercel.app/ai-history");
       setAiHistory(res.data);
     } catch {
       setAiHistory([]);
@@ -39,7 +39,7 @@ const handleSend = async () => {
     try {
       // সরাসরি OpenRouter কল না করে আপনার ব্যাকএন্ডের /ai-answer এন্ডপয়েন্টকে কল করুন
       const response = await axios.post(
-        "http://localhost:3000/ai-answer", // আপনার ব্যাকএন্ডের URL
+        "https://moshiur-rahman-server.vercel.app/ai-answer", // আপনার ব্যাকএন্ডের URL
         {
           command: currentInput,
           mode: mode, // বর্তমান মোড ("moshiur" or "general") পাঠান
