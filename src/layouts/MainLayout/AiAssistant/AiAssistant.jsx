@@ -1,229 +1,185 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FaRobot } from "react-icons/fa";
 
-import { FaRobot, FaTimes } from "react-icons/fa";
+import ChatHistoryMenu from "./ChatHistoryMenu/ChatHistoryMenu";
+import ChatWindow from "./ChatWindow/ChatWindow";
 
 const AiAssistant = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [chatSessions, setChatSessions] = useState([]);
+  const [activeChatId, setActiveChatId] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [aiDisabled, setAiDisabled] = useState(false);
-  const [showAskText, setShowAskText] = useState(true);
-  const [aiHistory, setAiHistory] = useState([]);
-  const [mode, setMode] = useState("moshiur"); // "moshiur" or "general"
-  const messagesEndRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    fetchAiHistory();
-  }, []);
+  const API_BASE_URL = "http://localhost:3000/api";
 
-  const fetchAiHistory = async () => {
+  const fetchChatSessions = async () => {
     try {
-      const res = await axios.get("https://moshiur-rahman-server.vercel.app/ai-history");
-      setAiHistory(res.data);
-    } catch {
-      setAiHistory([]);
+      const res = await axios.get(`${API_BASE_URL}/chats`);
+      setChatSessions(res.data);
+    } catch (err) {
+      console.error("Failed to fetch chat sessions:", err);
     }
   };
 
- // AiAssistant.js ফাইলের handleSend ফাংশনটি নিচের মতো পরিবর্তন করুন
+  useEffect(() => {
+    if (isChatOpen) {
+      fetchChatSessions();
+      if (!activeChatId) {
+        setActiveChatId("new");
+        setMessages([]);
+      }
+    }
+  }, [isChatOpen]);
 
-const handleSend = async () => {
+  const handleNewChat = () => {
+    setActiveChatId("new");
+    setMessages([]);
+    setIsMenuOpen(false);
+  };
+
+  const handleSelectChat = async (chatId) => {
+    setActiveChatId(chatId);
+    setIsMenuOpen(false);
+    setIsLoading(true);
+    try {
+      const res = await axios.get(`${API_BASE_URL}/chats/${chatId}`);
+      setMessages(res.data.messages);
+    } catch (err) {
+      console.error("Failed to fetch messages for chat:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSend = async (input, mode) => {
     if (!input.trim()) return;
 
     const userMessage = { from: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
-    const currentInput = input; // ইনপুট ক্লিয়ার হওয়ার আগে সেভ করে রাখুন
-    setInput("");
+    setIsLoading(true);
 
     try {
-      // সরাসরি OpenRouter কল না করে আপনার ব্যাকএন্ডের /ai-answer এন্ডপয়েন্টকে কল করুন
-      const response = await axios.post(
-        "https://moshiur-rahman-server.vercel.app/ai-answer", // আপনার ব্যাকএন্ডের URL
-        {
-          command: currentInput,
-          mode: mode, // বর্তমান মোড ("moshiur" or "general") পাঠান
-        }
-      );
-
-      const botReply = {
-        from: "bot",
-        text: response.data.answer, // ব্যাকএন্ড থেকে আসা উত্তর
-      };
-      setMessages((prev) => [...prev, botReply]);
-
-      // যেহেতু ব্যাকএন্ডেই হিস্টোরি সেভ হচ্ছে, তাই নতুন করে আর ai-command কল করার প্রয়োজন নেই।
-      // তবে নতুন হিস্টোরি দেখানোর জন্য fetchAiHistory কল করতে পারেন।
-      fetchAiHistory();
-
+      let response;
+      if (activeChatId === "new") {
+        response = await axios.post(`${API_BASE_URL}/chats`, { message: input, mode });
+        const newChat = response.data;
+        setActiveChatId(newChat._id);
+        setMessages(newChat.messages);
+        setChatSessions((prev) => [newChat, ...prev]);
+      } else {
+        response = await axios.post(`${API_BASE_URL}/chats/${activeChatId}/messages`, { message: input, mode });
+        const botReply = response.data.answer;
+        setMessages((prev) => [...prev, { from: "bot", text: botReply }]);
+      }
     } catch (err) {
       console.error(err);
       setMessages((prev) => [
         ...prev,
-        {
-          from: "bot",
-          text: "⚠️ AI is off due to API error or pricing limits.",
-        },
+        { from: "bot", text: "⚠️ দুঃখিত, একটি সমস্যা হয়েছে।" },
       ]);
-      setAiDisabled(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  const toggleChat = () => {
+    if (isChatOpen) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setIsChatOpen(false);
+        setIsAnimating(false);
+      }, 400);
+    } else {
+      setIsChatOpen(true);
     }
-  }, [messages]);
+  };
 
   return (
     <>
-      {/* AI Chatbot Button + Animated Text + Close Icon */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-2">
-        {showAskText && (
-          <div className="flex items-center space-x-1 bg-orange-500 text-white px-3 py-1 rounded-full font-semibold text-sm cursor-default animate-fadeIn">
-            <span>Ask about Moshiur</span>
-            <FaTimes
-              className="cursor-pointer hover:text-orange-300"
-              onClick={() => setShowAskText(false)}
-              title="Close"
-            />
-          </div>
-        )}
-
+      {/* AI চ্যাট বাটন */}
+      <div className="fixed bottom-6 right-6 z-50">
         <button
-          onClick={() => setIsChatOpen((prev) => !prev)}
+          onClick={toggleChat}
           className="bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-full shadow-lg focus:outline-none transition-all duration-300"
           title="Open AI Chat"
         >
-          <FaRobot size={20} />
+          <FaRobot size={24} />
         </button>
       </div>
 
-      {/* Chatbox UI */}
+      {/* চ্যাটবক্স UI */}
       {isChatOpen && (
-        <div className="fixed bottom-20 right-6 z-50 w-80 max-w-[90vw] h-[32rem] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 rounded-lg shadow-2xl flex flex-col overflow-hidden border border-gray-700 transform transition-all duration-500 animate-fadeIn">
-          <div className="bg-gradient-to-r from-orange-600 to-orange-400 text-white p-3 font-semibold text-center rounded-t-lg">
-            {mode === "moshiur" ? "Moshiur's AI Assistant" : "ChatGPT Assistant"}
-          </div>
-          <div className="flex justify-center gap-2 my-2">
-            <button
-              className={`px-3 py-1 rounded ${mode === "moshiur" ? "bg-orange-500 text-white" : "bg-gray-700 text-gray-300"}`}
-              onClick={() => setMode("moshiur")}
-            >
-              Moshiur Mode
-            </button>
-            <button
-              className={`px-3 py-1 rounded ${mode === "general" ? "bg-orange-500 text-white" : "bg-gray-700 text-gray-300"}`}
-              onClick={() => setMode("general")}
-            >
-              ChatGPT Mode
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-3 space-y-3 text-sm">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-3 rounded-lg max-w-[85%] break-words ${
-                  msg.from === "user"
-                    ? "bg-orange-600 text-white self-end animate-messageInUser"
-                    : "bg-gray-700 text-gray-200 self-start"
-                }`}
-              >
-                {msg.from === "bot" ? (
-                  <ul className="list-disc list-inside space-y-1">
-                    {msg.text.split("\n").map((line, idx) => (
-                      <li
-                        key={idx}
-                        className="opacity-0 animate-bulletFadeIn"
-                        style={{
-                          animationDelay: `${idx * 0.3}s`,
-                          animationFillMode: "forwards",
-                        }}
-                      >
-                        {line.trim()}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  msg.text
-                )}
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-            <div className="mt-4">
-              <h3 className="text-sm text-orange-300 mb-1">পুরোনো History</h3>
-              <div className="max-h-32 overflow-y-auto space-y-2">
-                {aiHistory.map((item, idx) => (
-                  <div key={idx} className="p-2 rounded bg-[#222] text-white">
-                    <div><strong>প্রশ্ন:</strong> {item.command}</div>
-                    <div><strong>উত্তর:</strong> {item.response}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          {!aiDisabled && (
-            <div className="flex flex-col sm:flex-row border-t border-gray-700 bg-gray-900">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder={mode === "moshiur" ? "Moshiur সম্পর্কে প্রশ্ন করুন..." : "কিছু জিজ্ঞেস করুন..."}
-                className="flex-grow min-w-0 p-3 bg-gray-900 text-white placeholder-gray-400 outline-none text-sm rounded-t-md sm:rounded-t-none sm:rounded-l-md"
-                autoComplete="off"
-                spellCheck={false}
-              />
-              <button
-                onClick={handleSend}
-                className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-b-md sm:rounded-b-none sm:rounded-r-md transition duration-300"
-                type="button"
-              >
-                Send
-              </button>
-            </div>
-          )}
+        <div
+          className={`fixed bottom-20 right-6 z-40 w-[90vw] h-[80vh] max-w-4xl max-h-[700px] bg-gray-900 rounded-lg shadow-2xl flex overflow-hidden border border-gray-700 
+            ${isAnimating ? "animate-genieClose" : "animate-genieOpen"}`}
+        >
+          <ChatHistoryMenu
+            isOpen={isMenuOpen}
+            sessions={chatSessions}
+            onSelectChat={handleSelectChat}
+            onNewChat={handleNewChat}
+            activeChatId={activeChatId}
+          />
+
+          <ChatWindow
+            messages={messages}
+            onSend={handleSend}
+            isLoading={isLoading}
+            onToggleMenu={() => setIsMenuOpen(!isMenuOpen)}
+          />
         </div>
       )}
 
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateX(-10px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease forwards;
-        }
-        @keyframes messageInUser {
-          0% {
-            opacity: 0;
-            transform: translateX(20px) scale(0.95);
+      <style>
+        {`
+          @keyframes genieOpen {
+            0% { 
+              transform: scaleY(0.1) scaleX(0.5) translateY(200px);
+              opacity: 0;
+              border-radius: 50%;
+            }
+            50% {
+              transform: scaleY(1.1) scaleX(0.9) translateY(0);
+              opacity: 1;
+              border-radius: 20px;
+            }
+            100% { 
+              transform: scaleY(1) scaleX(1) translateY(0);
+              border-radius: 12px;
+            }
           }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(1);
+
+          @keyframes genieClose {
+            0% { 
+              transform: scaleY(1) scaleX(1) translateY(0);
+              opacity: 1;
+              border-radius: 12px;
+            }
+            50% {
+              transform: scaleY(1.1) scaleX(0.9) translateY(0);
+              opacity: 0.8;
+            }
+            100% { 
+              transform: scaleY(0.1) scaleX(0.5) translateY(200px);
+              opacity: 0;
+              border-radius: 50%;
+            }
           }
-        }
-        @keyframes bulletFadeIn {
-          from {
-            opacity: 0;
-            transform: translateX(-15px);
+
+          .animate-genieOpen {
+            animation: genieOpen 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            transform-origin: bottom right;
           }
-          to {
-            opacity: 1;
-            transform: translateX(0);
+          .animate-genieClose {
+            animation: genieClose 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            transform-origin: bottom right;
           }
-        }
-        .animate-messageInUser {
-          animation: messageInUser 0.4s ease forwards;
-        }
-        .animate-bulletFadeIn {
-          animation-name: bulletFadeIn;
-          animation-duration: 0.5s;
-          animation-timing-function: ease;
-          animation-fill-mode: forwards;
-        }
-      `}</style>
+        `}
+      </style>
     </>
   );
 };

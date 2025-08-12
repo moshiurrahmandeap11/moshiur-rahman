@@ -64,7 +64,7 @@ const Navbar = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get("https://moshiur-rahman-server.vercel.app/reviews/stats");
+      const res = await axios.get("http://localhost:3000/reviews/stats");
       setReviewStats(res.data);
     } catch (err) {
       console.error("Error fetching review stats:", err);
@@ -90,7 +90,7 @@ const Navbar = () => {
     };
 
     try {
-      await axios.post("https://moshiur-rahman-server.vercel.app/reviews", reviewData);
+      await axios.post("http://localhost:3000/reviews", reviewData);
       setReview("");
       setName("");
       setEmail("");
@@ -128,7 +128,7 @@ const Navbar = () => {
           {/* Blogs */}
           <a href="/blogs" className="relative inline-block group text-black font-semibold px-4 py-2 border border-orange-400 rounded-full overflow-hidden text-sm hover:shadow-lg">
             <span className="relative z-10 text-white group-hover:text-white transition duration-300 hidden lg:inline">Blogs</span>
-            <span className="relative z-10 group-hover:text-white transition duration-300 inline lg:hidden">Blog</span>
+            <span className="relative z-10 group-hover:text-white transition duration-300 text-white inline lg:hidden">Blogs</span>
             <span className="absolute left-0 bottom-0 w-full h-full bg-orange-400 z-0 transform scale-x-0 origin-bottom-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
           </a>
 

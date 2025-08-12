@@ -30,7 +30,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`https://moshiur-rahman-server.vercel.app/blogs/${id}`);
+        const res = await axios.get(`http://localhost:3000/blogs/${id}`);
         setBlog(res.data.data || res.data);
       } catch (err) {
         console.error("Failed to fetch blog:", err);
@@ -39,7 +39,7 @@ const Blog = () => {
 
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`https://moshiur-rahman-server.vercel.app/comments/${id}`);
+        const res = await axios.get(`http://localhost:3000/comments/${id}`);
         setComments(res.data.data || []);
         setLoadingComments(false);
       } catch (err) {
@@ -59,7 +59,7 @@ useEffect(() => {
     try {
       // Always fetch like counts for all comments
       const countsPromises = comments.map((c) =>
-        axios.get(`https://moshiur-rahman-server.vercel.app/comments/like-count/${c._id}`)
+        axios.get(`http://localhost:3000/comments/like-count/${c._id}`)
       );
 
       const countsResponses = await Promise.all(countsPromises);
@@ -75,7 +75,7 @@ useEffect(() => {
       // Only fetch likedByUser if user logged in
       if (user) {
         const likedPromises = comments.map((c) =>
-          axios.get(`https://moshiur-rahman-server.vercel.app/comments/liked/${c._id}`, {
+          axios.get(`http://localhost:3000/comments/liked/${c._id}`, {
             params: { userId: user.uid },
           })
         );
@@ -150,7 +150,7 @@ useEffect(() => {
     }
 
     try {
-      const res = await axios.post("https://moshiur-rahman-server.vercel.app/comments", {
+      const res = await axios.post("http://localhost:3000/comments", {
         blogId: id,
         username: user.displayName || "Anonymous",
         photoURL: user.photoURL || "",
@@ -214,7 +214,7 @@ useEffect(() => {
     }
 
     try {
-      const res = await axios.post("https://moshiur-rahman-server.vercel.app/comments/like", {
+      const res = await axios.post("http://localhost:3000/comments/like", {
         commentId,
         userId: user.uid,
       });

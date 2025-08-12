@@ -113,7 +113,7 @@ const MyPortfolio = () => {
           {/* Left: Description */}
           <div className="md:w-1/2 text-gray-300 text-lg leading-relaxed space-y-5">
             <p data-aos="fade-up" data-aos-duration="900" data-aos-delay="100">
-              Yo! I’m <span className="text-orange-400">Moshiur Rahman</span> —
+               I’m <span className="text-orange-400">Moshiur Rahman</span> —
               a full-stack developer with a knack for solving real-world
               problems through code. My focus? Seamless UI/UX, performance, and
               scalable backend logic.
