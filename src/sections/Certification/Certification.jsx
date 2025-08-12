@@ -11,7 +11,7 @@ const certificates = [
     image: progHeroImg,
     website: "https://programming-hero.com",
     country: "Bangladesh",
-    issued: "June 2023",
+    issued: "June 2025",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const certificates = [
     image: progHeroImg,
     website: "https://programming-hero.com",
     country: "Bangladesh",
-    issued: "August 2023",
+    issued: "August 2025",
   },
 ];
 
