@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment, useContext } from "react";
 import profilePic from "../../assets/profile.jpg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { LiaStarSolid } from "react-icons/lia";
-import cv from "../../assets/moshiurcv.pdf";
+import cv from "../../assets/resume.pdf";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router"; // changed
