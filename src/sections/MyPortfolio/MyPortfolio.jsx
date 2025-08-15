@@ -39,14 +39,12 @@ const MyPortfolio = () => {
     const animateLang = () => {
       const lang = languages[currentLangIndex];
       if (charIndex > lang.length) {
-        // Set full text and wait before next animation
         setAnimatedLangs((prev) => {
           const copy = [...prev];
           copy[currentLangIndex] = lang;
           return copy;
         });
 
-        // After 3s, reset this language's animation and move to next language
         timeoutId = setTimeout(() => {
           setAnimatedLangs((prev) => {
             const copy = [...prev];
@@ -61,7 +59,6 @@ const MyPortfolio = () => {
         return;
       }
 
-      // Build display text with encrypted chars
       let displayText = "";
       for (let i = 0; i < lang.length; i++) {
         if (i < charIndex) displayText += lang[i];
@@ -87,7 +84,7 @@ const MyPortfolio = () => {
 
   return (
     <section className="relative py-24 bg-gradient-to-b from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-white overflow-hidden">
-      {/* Background ship wheel positioned 20% from bottom */}
+      {/* Background ship wheel */}
       <img
         ref={wheelRef}
         src={shipWheel}
@@ -113,9 +110,9 @@ const MyPortfolio = () => {
           {/* Left: Description */}
           <div className="md:w-1/2 text-gray-300 text-lg leading-relaxed space-y-5">
             <p data-aos="fade-up" data-aos-duration="900" data-aos-delay="100">
-               I’m <span className="text-orange-400">Moshiur Rahman</span> —
-              a full-stack developer with a knack for solving real-world
-              problems through code. My focus? Seamless UI/UX, performance, and
+              I’m <span className="text-orange-400">Moshiur Rahman</span> — a
+              full-stack developer with a knack for solving real-world problems
+              through code. My focus? Seamless UI/UX, performance, and
               scalable backend logic.
             </p>
             <p data-aos="fade-up" data-aos-duration="900" data-aos-delay="200">
@@ -135,47 +132,45 @@ const MyPortfolio = () => {
               storytelling through digital experiences. Let's make something
               epic together ✨
             </p>
-            <p data-aos="fade-up" data-aos-duration="900" data-aos-delay="500">
-              When I'm not coding, you can find me exploring nature, diving
-              into sci-fi novels, or experimenting with new music beats.
-            </p>
-            <p data-aos="fade-up" data-aos-duration="900" data-aos-delay="600">
-              I'm always eager to connect with like-minded creators and
-              developers. Drop me a message anytime!
-            </p>
-
+            
             {/* New languages/tech section */}
             <div
               data-aos="fade-up"
               data-aos-duration="900"
               data-aos-delay="700"
-              className="mt-8"
+              className="mt-8 pt-4"
             >
-              <h3 className="text-orange-400 font-semibold mb-2">
+              <h3 className="text-orange-400 font-semibold mb-4 text-xl">
                 Languages & Tech I Know:
               </h3>
-              <ul className="list-disc list-inside text-gray-300 space-y-1">
+              {/* --- MODIFIED: Skills shown in 3D glassy boxes --- */}
+              <div className="flex flex-wrap gap-4">
                 {animatedLangs.map((langText, idx) => (
-                  <li key={idx} className="font-mono">
+                  <div 
+                    key={idx} 
+                    className="font-mono bg-black/30 backdrop-blur-sm border border-orange-500/30 rounded-lg py-2 px-4 shadow-lg shadow-orange-900/20 transform transition-all duration-300 hover:scale-105 hover:shadow-orange-500/40"
+                    style={{ minWidth: '120px', textAlign: 'center' }}
+                  >
                     {langText || ""}
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
 
-          {/* Right: Image Box */}
+          {/* Right: Image Box with 3D Glassy Effect */}
           <div
-            className="md:w-1/2 relative"
+            className="md:w-1/2 relative flex justify-center items-center"
             data-aos="zoom-in"
             data-aos-duration="1000"
             data-aos-delay="800"
           >
-            <div className="border-4 border-orange-500 rounded-xl w-[300px] h-[350px] mx-auto relative">
+            {/* --- MODIFIED: Glassy container with dark gradient tone --- */}
+            <div className="w-[320px] h-[370px] bg-gradient-to-br from-gray-900/30 to-gray-800/20 backdrop-blur-lg border-2 border-white/10 rounded-2xl shadow-2xl shadow-black/50 p-4">
               <img
                 src={profilePic}
                 alt="Moshiur Rahman"
-                className="absolute top-[-20px] left-[-20px] w-[300px] h-[350px] object-cover rounded-xl shadow-2xl border-2 border-white brightness-110"
+                className="w-full h-full object-cover rounded-xl shadow-2xl brightness-110"
               />
             </div>
           </div>

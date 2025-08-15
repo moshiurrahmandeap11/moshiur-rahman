@@ -45,14 +45,14 @@ const Experience = () => {
   }, [activeId]);
 
   return (
-    <section className="h-screen bg-gradient-to-br from-[#0d1b2a] via-[#1b263b] to-[#415a77] text-gray-100 select-none flex flex-col justify-center items-center px-6">
+    <section className="min-h-screen bg-gradient-to-br from-[#0d1b2a] via-[#1b263b] to-[#415a77] text-gray-100 select-none flex flex-col justify-center items-center px-6 py-12">
       {/* Header with hr line */}
       <div
         className="flex items-center gap-4 mb-8 w-full max-w-4xl"
         data-aos="fade-right"
       >
         <h2 className="text-3xl font-bold text-orange-400 whitespace-nowrap">
-          My work experiences
+          My Work Experiences
         </h2>
         <hr className="flex-grow border-t border-orange-600 opacity-60" />
       </div>
@@ -89,16 +89,18 @@ const Experience = () => {
         />
       </div>
 
-      {/* Experience Content */}
-      <div className="max-w-4xl w-full min-h-[180px] flex items-center justify-center px-4">
-        {experiences.map(({ id, header, date, description }, idx) => (
+      {/* --- MODIFIED: Experience Content in a 3D Glassy Box --- */}
+      <div 
+        className="max-w-4xl w-full min-h-[280px] bg-black/20 backdrop-blur-lg border border-white/10 rounded-2xl shadow-2xl shadow-black/30 p-8"
+        data-aos="zoom-in"
+        data-aos-delay="200"
+      >
+        {experiences.map(({ id, header, date, description }) => (
           <div
             key={id}
             className={`transition-opacity duration-500 ${
-              activeId === id ? "opacity-100" : "opacity-0 hidden"
+              activeId === id ? "opacity-100" : "opacity-0 absolute invisible"
             }`}
-            data-aos="fade-up"
-            data-aos-delay={200 + idx * 150}
           >
             <h3 className="text-2xl font-semibold text-orange-400 mb-2">
               {header}

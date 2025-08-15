@@ -1,0 +1,28 @@
+# Robots.txt for moshiurrahman.online
+# Professional Next.js Developer Portfolio
+
+# Allow all web crawlers to access all content
+User-agent: *
+Allow: /
+
+# Block access to admin/private areas (if any)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_next/static/
+Disallow: /api/
+
+# Allow important crawlers explicit access
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawl delay for better server performance
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://moshiurrahman.online/sitemap.xml

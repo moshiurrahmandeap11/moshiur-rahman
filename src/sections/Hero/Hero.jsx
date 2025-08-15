@@ -3,7 +3,8 @@ import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaInstagram } from "react-
 
 const titles = [
   "A full stack web developer",
-  "A mern stack developer",
+  "A Next.js developer",
+  "A MERN stack developer",
   "A front end developer",
 ];
 
@@ -11,8 +12,9 @@ const Hero = () => {
   const [index, setIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false); // for animation control
+  const [showModal, setShowModal] = useState(false);
   const circleRef = useRef(null);
+  const glassRef = useRef(null);
 
   const lastPos = useRef({ x: 0, y: 0 });
   const pos = useRef({ x: 0, y: 0 });
@@ -52,12 +54,21 @@ const Hero = () => {
     };
   }, [index]);
 
-  // Animate big circle with fluid motion
+  // Animate fluid glass effects
   useEffect(() => {
     const lerp = (start, end, amt) => start + (end - start) * amt;
 
     const handleMove = (e) => {
+      const rect = document.body.getBoundingClientRect();
+      const x = (e.clientX - rect.width / 2) / rect.width;
+      const y = (e.clientY - rect.height / 2) / rect.height;
+      
       targetPos.current = { x: e.clientX, y: e.clientY };
+      
+      // Move glass effect
+      if (glassRef.current) {
+        glassRef.current.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+      }
     };
 
     const animate = () => {
@@ -76,7 +87,7 @@ const Hero = () => {
       if (circleRef.current) {
         const scaleX = 1 + Math.min(Math.abs(velocity.current.x) / 60, 0.5);
         const scaleY = 1 - Math.min(Math.abs(velocity.current.y) / 150, 0.3);
-        const rotate = velocity.current.x * 4;
+        const rotate = velocity.current.x * 2;
 
         circleRef.current.style.transform = `
           translate(${pos.current.x - 400}px, ${pos.current.y - 400}px)
@@ -95,102 +106,213 @@ const Hero = () => {
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
 
-  // Modal open/close handlers with animation
   const openModal = () => {
     setIsModalOpen(true);
-    setTimeout(() => setShowModal(true), 10); // slight delay to trigger transition
+    setTimeout(() => setShowModal(true), 10);
   };
 
   const closeModal = () => {
     setShowModal(false);
-    // wait for animation to finish before unmounting modal
     setTimeout(() => setIsModalOpen(false), 300);
   };
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e]">
-      {/* Fluid motion circle */}
-<div
-  ref={circleRef}
-  className="pointer-events-none absolute top-0 left-0 w-[800px] h-[800px] bg-orange-600 opacity-30 rounded-full z-0 transition-all duration-50 blur-3xl"
-/>
-
-
-      {/* Content */}
-      <div className="w-11/12 max-w-6xl mx-auto pt-32 text-center relative z-10">
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          G'day, I'm <br /> Moshiur Rahman
-        </h1>
-
-        <h4 className="text-xl md:text-2xl font-mono mt-4 text-orange-500 min-h-[2.5rem]">
-          {displayedText}
-        </h4>
-
-        <p className="mt-6 text-white/40 max-w-xl mx-auto">
-          Passionate about building dynamic, responsive web apps with clean code & modern design. Always learning, always shipping.
-        </p>
-
-        <button
-          onClick={openModal}
-          className="mt-6 inline-block relative group text-black font-semibold px-6 py-3 border border-orange-400 rounded overflow-hidden text-sm"
-        >
-          <span className="relative z-10 group-hover:text-white transition duration-300">
-            Contact Me!
-          </span>
-          <span className="absolute left-0 bottom-0 w-full h-full bg-orange-400 z-0 transform scale-x-0 origin-bottom-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
-        </button>
+    <section className="relative min-h-screen w-full overflow-hidden" id="hero">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800">
+        {/* Animated gradient overlays */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.15),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(234,179,8,0.1),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,rgba(251,146,60,0.05),transparent_50%)]"></div>
       </div>
 
-      {/* Modal */}
+      {/* Floating Glass Elements */}
+      <div ref={glassRef} className="absolute inset-0 pointer-events-none transition-transform duration-300 ease-out">
+        <div className="absolute top-20 left-20 w-32 h-32 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 animate-float"></div>
+        <div className="absolute top-40 right-32 w-24 h-24 bg-orange-400/10 backdrop-blur-sm rounded-lg border border-orange-400/20 animate-float-delayed"></div>
+        <div className="absolute bottom-40 left-40 w-20 h-20 bg-yellow-400/10 backdrop-blur-sm rounded-full border border-yellow-400/20 animate-float-slow"></div>
+      </div>
+
+      {/* Fluid motion circle with glass effect */}
+      <div
+        ref={circleRef}
+        className="pointer-events-none absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-to-br from-orange-400/20 via-yellow-400/15 to-orange-600/20 rounded-full z-0 transition-all duration-75 blur-3xl backdrop-blur-xl"
+      />
+
+      {/* Main Content Container */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen">
+        <div className="w-11/12 max-w-6xl mx-auto text-center">
+          
+          {/* Glass Content Card */}
+          <div className="relative group">
+            {/* Glow Effect */}
+            <div className="absolute -inset-8 bg-gradient-to-r from-orange-400/10 via-yellow-400/10 to-orange-400/10 blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-1000 rounded-3xl"></div>
+            
+            {/* Main Glass Panel */}
+            <div className="relative backdrop-blur-2xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 rounded-3xl border border-white/10 p-8 sm:p-12 lg:p-16 shadow-2xl transform transition-all duration-500 hover:scale-[1.02] hover:-translate-y-2">
+              
+              {/* Subtle Inner Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 via-transparent to-yellow-400/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              
+              <div className="relative z-10">
+                {/* Main Title */}
+                <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-extrabold leading-tight mb-6">
+                  <span className="block bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent drop-shadow-lg">
+                    G'day, I'm
+                  </span>
+                  <span className="block bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-500 bg-clip-text text-transparent drop-shadow-xl">
+                    Moshiur Rahman
+                  </span>
+                </h1>
+
+                {/* Animated Subtitle */}
+                <div className="relative mb-8">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-orange-400/20 to-yellow-400/20 blur-lg rounded-lg opacity-60"></div>
+                  <h4 className="relative text-lg sm:text-xl lg:text-2xl xl:text-3xl font-mono text-orange-400 min-h-[3rem] flex items-center justify-center backdrop-blur-sm bg-white/5 rounded-xl p-4 border border-white/10">
+                    {displayedText}
+                  </h4>
+                </div>
+
+                {/* Description */}
+                <p className="text-white/70 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+                  Passionate about building dynamic, responsive web apps with clean code & modern design. Always learning, always shipping.
+                </p>
+
+                {/* CTA Button */}
+                <button
+                  onClick={openModal}
+                  className="group/btn relative inline-flex items-center justify-center px-8 py-4 text-base sm:text-lg font-bold text-white transition-all duration-300 transform hover:scale-105 active:scale-95 overflow-hidden rounded-2xl"
+                >
+                  {/* Button Background */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-2xl opacity-90 group-hover/btn:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
+                  
+                  {/* Button Border */}
+                  <div className="absolute inset-0 rounded-2xl border border-white/20 group-hover/btn:border-white/40 transition-colors"></div>
+                  
+                  {/* Button Glow */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-2xl blur opacity-0 group-hover/btn:opacity-60 transition-opacity"></div>
+                  
+                  {/* Button Text */}
+                  <span className="relative z-10 flex items-center gap-2">
+                    Contact Me!
+                    <span className="transform group-hover/btn:translate-x-1 transition-transform">💫</span>
+                  </span>
+                </button>
+              </div>
+
+              {/* Bottom Accent Line */}
+              <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-400/50 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Floating Social Icons */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden lg:flex space-x-4">
+            {[
+              { icon: FaGithub, href: "https://github.com/moshiurrahmandeap11", color: "group-hover:text-gray-400" },
+              { icon: FaLinkedin, href: "https://www.linkedin.com/in/moshiurrahmandeap/", color: "group-hover:text-blue-400" },
+              { icon: FaEnvelope, href: "mailto:moshiurrahmandeap@gmail.com", color: "group-hover:text-red-400" }
+            ].map(({ icon: Icon, href, color }, i) => (
+              <a
+                key={i}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-3 backdrop-blur-sm bg-white/5 rounded-xl border border-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
+              >
+                <Icon className={`w-5 h-5 text-white/70 ${color} transition-colors`} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Modal */}
       {isModalOpen && (
         <div
           onClick={closeModal}
-          className={`fixed inset-0 bg-transparent backdrop-blur-3xl bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300 ${showModal ? "opacity-100" : "opacity-0"
-            }`}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${showModal ? "opacity-100" : "opacity-0"}`}
         >
+          {/* Modal Backdrop */}
+          <div className="absolute inset-0 backdrop-blur-2xl bg-gradient-to-br from-gray-900/80 via-slate-900/85 to-gray-800/80"></div>
+          
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`bg-gray-900 rounded-lg p-8 max-w-sm w-full text-center text-white relative transform transition-transform duration-300 ${showModal ? "scale-100" : "scale-90"
-              }`}
+            className={`relative transform transition-all duration-300 ${showModal ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
           >
-            <h2 className="text-2xl mb-6 font-semibold">Connect with me</h2>
-            <div className="flex justify-center space-x-6 text-3xl">
-              <a
-                href="https://github.com/moshiurrahmandeap11"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="hover:text-orange-500 transition"
-              >
-                <FaGithub />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/moshiurrahmandeap/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="hover:text-orange-500 transition"
-              >
-                <FaLinkedin />
-              </a>
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=moshiurrahmandeap@gmail.com" target="_blank" rel="noopener noreferrer"
-                aria-label="Email"
-                className="hover:text-orange-500 transition"
-              >
-                <FaEnvelope />
-              </a>
-            </div>
+            {/* Modal Glow */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-orange-400/20 via-yellow-400/20 to-orange-400/20 blur-2xl rounded-3xl"></div>
+            
+            {/* Modal Content */}
+            <div className="relative backdrop-blur-2xl bg-gradient-to-br from-gray-900/90 via-slate-900/95 to-gray-800/90 rounded-2xl border border-white/10 p-8 max-w-md w-full text-center shadow-2xl">
+              
+              {/* Modal Header */}
+              <h2 className="text-2xl sm:text-3xl font-bold mb-8 bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+                Connect with me
+              </h2>
+              
+              {/* Social Links */}
+              <div className="flex justify-center space-x-6 mb-8">
+                {[
+                  { icon: FaGithub, href: "https://github.com/moshiurrahmandeap11", label: "GitHub", color: "hover:text-gray-400" },
+                  { icon: FaLinkedin, href: "https://www.linkedin.com/in/moshiurrahmandeap/", label: "LinkedIn", color: "hover:text-blue-400" },
+                  { icon: FaEnvelope, href: "mailto:moshiurrahmandeap@gmail.com", label: "Email", color: "hover:text-red-400" }
+                ].map(({ icon: Icon, href, label, color }, i) => (
+                  <a
+                    key={i}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className={`group relative p-4 backdrop-blur-sm bg-white/5 rounded-xl border border-white/10 hover:border-white/30 transition-all duration-300 transform hover:scale-110 ${color}`}
+                  >
+                    <Icon className="w-7 h-7 text-white/80 group-hover:text-current transition-colors" />
+                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-400/0 to-yellow-400/0 group-hover:from-orange-400/20 group-hover:to-yellow-400/20 rounded-xl transition-all duration-300 blur -z-10"></div>
+                  </a>
+                ))}
+              </div>
 
-            <button
-              onClick={closeModal}
-              className="mt-8 px-4 py-2 bg-orange-500 rounded hover:bg-orange-600 transition"
-            >
-              Close
-            </button>
+              {/* Close Button */}
+              <button
+                onClick={closeModal}
+                className="group relative px-6 py-3 bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
+              >
+                <span className="relative z-10">Close</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        @keyframes float-delayed {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(-3deg); }
+        }
+        
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-float-delayed {
+          animation: float-delayed 8s ease-in-out infinite 2s;
+        }
+        
+        .animate-float-slow {
+          animation: float-slow 10s ease-in-out infinite 4s;
+        }
+      `}</style>
     </section>
   );
 };

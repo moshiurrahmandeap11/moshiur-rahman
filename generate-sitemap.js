@@ -6,22 +6,13 @@ const hostname = 'https://moshiurrahman.online';
 
 const links = [
   { url: '/', changefreq: 'weekly', priority: 1.0 },
-  { url: '/about', changefreq: 'monthly', priority: 0.9 },
-  { url: '/skills', changefreq: 'monthly', priority: 0.8 },
-  { url: '/portfolio', changefreq: 'weekly', priority: 0.9 },
-  { url: '/projects/codecircle', changefreq: 'monthly', priority: 0.7 },
-  { url: '/projects/coursion', changefreq: 'monthly', priority: 0.7 },
-  { url: '/projects/miverr', changefreq: 'monthly', priority: 0.7 },
-  { url: '/services', changefreq: 'monthly', priority: 0.8 },
-  { url: '/experience', changefreq: 'monthly', priority: 0.7 },
-  { url: '/education', changefreq: 'yearly', priority: 0.6 },
-  { url: '/contact', changefreq: 'monthly', priority: 0.8 },
   { url: '/blog', changefreq: 'weekly', priority: 0.7 },
-  { url: '/resume', changefreq: 'monthly', priority: 0.6 },
-  { url: '/testimonials', changefreq: 'monthly', priority: 0.5 },
-  { url: '/privacy-policy', changefreq: 'yearly', priority: 0.3 },
-  { url: '/terms', changefreq: 'yearly', priority: 0.3 },
+  { url: '/login', changefreq: 'monthly', priority: 0.5 },
+  { url: '/signup', changefreq: 'monthly', priority: 0.5 },
+  { url: '/assets/resume-Bu6aSiZz.pdf', changefreq: 'yearly', priority: 0.6 },
 ];
+
+
 
 async function generateSitemap() {
   try {
