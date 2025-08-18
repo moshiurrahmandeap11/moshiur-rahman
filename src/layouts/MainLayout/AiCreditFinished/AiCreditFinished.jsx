@@ -37,23 +37,23 @@ const ApiCreditFinished = ({ onRetry, estimatedWaitTime }) => {
 
         {/* Title with Gradient */}
         <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
-          API Credit শেষ!
+          API Credit Finished!
         </h1>
 
         {/* Description */}
         <div className="mb-8 space-y-4">
           <p className="text-xl text-gray-300 leading-relaxed">
-            দুঃখিত, এই মুহূর্তে API credit শেষ হয়ে গেছে। 
+            API Credit has been exhausted. Please wait while we process your request.
           </p>
           <p className="text-lg text-gray-400">
-            আমরা আপনার জন্য আবার চেষ্টা করার ব্যবস্থা করছি।
+            We are working to retry for you.
           </p>
         </div>
 
         {/* Countdown Timer */}
         {countdown > 0 && (
           <div className="mb-8 p-6 bg-gray-800/50 rounded-2xl border border-gray-700/50 backdrop-blur-sm">
-            <div className="text-sm text-gray-400 mb-2">আনুমানিক অপেক্ষার সময়</div>
+            <div className="text-sm text-gray-400 mb-2">Estimated Wait Time</div>
             <div className="text-4xl font-mono text-orange-400 mb-2">
               {formatTime(countdown)}
             </div>
@@ -74,7 +74,7 @@ const ApiCreditFinished = ({ onRetry, estimatedWaitTime }) => {
               className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-200 shadow-lg transform hover:scale-105 flex items-center gap-3 mx-auto"
             >
               <FaRedo className="animate-spin" />
-              পুনরায় চেষ্টা করুন
+              Try Again
             </button>
           )}
           
@@ -83,14 +83,14 @@ const ApiCreditFinished = ({ onRetry, estimatedWaitTime }) => {
               onClick={() => window.location.reload()}
               className="px-6 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors duration-200"
             >
-              🔄 রিফ্রেশ করুন
+              🔄 Refresh
             </button>
             
             <button
               onClick={() => window.history.back()}
               className="px-6 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors duration-200"
             >
-              ⬅️ ফিরে যান
+              ⬅️ Back
             </button>
           </div>
         </div>
@@ -107,7 +107,7 @@ const ApiCreditFinished = ({ onRetry, estimatedWaitTime }) => {
 
         {/* Footer Message */}
         <div className="mt-8 text-sm text-gray-500">
-          <p>আমরা সবসময় আপনার সেবায় আছি। ধন্যবাদ আপনার ধৈর্যের জন্য। 🙏</p>
+          <p>At your service</p>
         </div>
       </div>
     </div>

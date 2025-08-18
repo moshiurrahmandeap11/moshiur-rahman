@@ -116,7 +116,7 @@ const ChatHistoryMenu = ({
                       session.mode === 'moshiur' ? 'bg-orange-400' : 'bg-blue-400'
                     }`}></div>
                     <span className="truncate font-medium">
-                      {session.title || "নতুন চ্যাট"}
+                      {session.title || "New Chat"}
                     </span>
                   </div>
                   
@@ -130,7 +130,7 @@ const ChatHistoryMenu = ({
                           }
                         }}
                         className="p-1.5 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors flex-shrink-0"
-                        title="চ্যাট মুছুন"
+                        title="Delete Chat"
                       >
                         <FaTrash size={12} />
                       </button>
@@ -155,7 +155,7 @@ const ChatHistoryMenu = ({
           className="flex items-center justify-center gap-3 w-full px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
           <FaPlus className="text-white" />
-          নতুন চ্যাট
+          New Chat
         </button>
       </div>
 
@@ -164,7 +164,7 @@ const ChatHistoryMenu = ({
         <div className="relative">
           <input
             type="text"
-            placeholder="চ্যাট খুঁজুন..."
+            placeholder="Search Chat..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-300 placeholder-gray-500 outline-none focus:border-orange-500/50 focus:bg-gray-800/80 transition-all duration-200"
@@ -186,7 +186,7 @@ const ChatHistoryMenu = ({
         <div className="p-4 text-center">
           <div className="inline-flex items-center gap-2 text-gray-400">
             <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-            লোড হচ্ছে...
+            Loading
           </div>
         </div>
       )}
@@ -197,25 +197,25 @@ const ChatHistoryMenu = ({
           <>
             <ChatGroup 
               title="Today" 
-              titleBn="আজ" 
+              titleBn="Today" 
               sessions={groupSessionsByDate.today} 
               icon="📅" 
             />
             <ChatGroup 
               title="Yesterday" 
-              titleBn="গতকাল" 
+              titleBn="Yesterday" 
               sessions={groupSessionsByDate.yesterday} 
               icon="📋" 
             />
             <ChatGroup 
               title="This Week" 
-              titleBn="এই সপ্তাহে" 
+              titleBn="This Weak" 
               sessions={groupSessionsByDate.thisWeek} 
               icon="📊" 
             />
             <ChatGroup 
               title="Older" 
-              titleBn="পুরাতন" 
+              titleBn="Old" 
               sessions={groupSessionsByDate.older} 
               icon="📚" 
             />
@@ -223,16 +223,16 @@ const ChatHistoryMenu = ({
             {filteredSessions.length === 0 && safeSessions.length > 0 && (
               <div className="text-center py-8 text-gray-500">
                 <div className="text-4xl mb-2">🔍</div>
-                <p className="text-sm">কোন চ্যাট পাওয়া যায়নি</p>
-                <p className="text-xs mt-2">অন্য keyword দিয়ে খুঁজে দেখুন</p>
+                <p className="text-sm">No Chat found</p>
+                <p className="text-xs mt-2">Try searching with a different keyword</p>
               </div>
             )}
 
             {safeSessions.length === 0 && !isLoading && (
               <div className="text-center py-12 text-gray-500">
                 <div className="text-6xl mb-4">💬</div>
-                <p className="text-lg font-medium mb-2">কোন চ্যাট নেই</p>
-                <p className="text-sm">নতুন চ্যাট শুরু করুন</p>
+                <p className="text-lg font-medium mb-2">No Chat found</p>
+                <p className="text-sm">Start a new chat</p>
               </div>
             )}
           </>
@@ -242,9 +242,9 @@ const ChatHistoryMenu = ({
       {/* Footer */}
       <div className="p-4 border-t border-gray-800/30">
         <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>মোট {safeSessions.length} টি চ্যাট</span>
+          <span>Total {safeSessions.length} Chats</span>
           {searchTerm && (
-            <span>পাওয়া গেছে {filteredSessions.length} টি</span>
+            <span>Found {filteredSessions.length} Chats</span>
           )}
         </div>
       </div>

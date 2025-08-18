@@ -69,7 +69,7 @@ const AiAssistant = () => {
       console.log(`✅ Loaded ${sessions.length} chat sessions`);
     } catch (err) {
       console.error("❌ Failed to fetch chat sessions:", err);
-      setError("চ্যাট সেশন লোড করতে ব্যর্থ হয়েছে");
+      setError("Chat session failed to load");
       safeChatSessions([]); // Set empty array on error
     } finally {
       setIsLoadingSessions(false);
@@ -118,7 +118,7 @@ const AiAssistant = () => {
       }
     } catch (err) {
       console.error("❌ Failed to fetch messages for chat:", err);
-      setError("চ্যাট লোড করতে ব্যর্থ হয়েছে");
+      setError("Chat failed to load");
       safeSetMessages([]);
     } finally {
       setIsLoading(false);
@@ -189,22 +189,22 @@ const AiAssistant = () => {
       }
     } catch (err) {
       console.error("❌ Send message error:", err);
-      
-      let errorMessage = "⚠️ দুঃখিত, একটি সমস্যা হয়েছে।";
-      
+
+      let errorMessage = "⚠️ Sorry, something went wrong.";
+
       if (err.response?.status === 429) {
-        errorMessage = "⚠️ অনেক বেশি রিকোয়েস্ট। একটু অপেক্ষা করুন।";
+        errorMessage = "⚠️ Too many requests. Please wait a moment.";
       } else if (err.response?.status >= 500) {
-        errorMessage = "⚠️ সার্ভার সমস্যা। পরে চেষ্টা করুন।";
+        errorMessage = "⚠️ Server error. Please try again later.";
       } else if (err.code === 'ECONNABORTED') {
-        errorMessage = "⚠️ সময় শেষ। আবার চেষ্টা করুন।";
+        errorMessage = "⚠️ Time out. Please try again.";
       }
       
       safeSetMessages(prev => [
         ...prev,
         { from: "bot", text: errorMessage, timestamp: new Date() },
       ]);
-      setError("মেসেজ পাঠাতে ব্যর্থ হয়েছে");
+      setError("Message failed to send");
     } finally {
       setIsLoading(false);
     }
@@ -227,7 +227,7 @@ const AiAssistant = () => {
       console.log(`🗑️ Chat deleted: ${chatId}`);
     } catch (err) {
       console.error("❌ Failed to delete chat:", err);
-      setError("চ্যাট মুছতে ব্যর্থ হয়েছে");
+      setError("Chat failed to delete");
     }
   };
 
