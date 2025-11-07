@@ -5,8 +5,18 @@ import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 const projectThumb = "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=300&fit=crop";
 const projectThumb1 = "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=300&fit=crop";
 const projectThumb2 = "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=400&h=300&fit=crop";
+const projectThumb4 = "https://i.postimg.cc/pLLPHfbZ/Screenshot-from-2025-11-08-00-05-47.png"
 
 const projects = [
+  {
+    id:4,
+    featured: true,
+    title: "Career Crafter - AI powered Job Seeking platform",
+    github: "https://github.com/moshiurrahmandeap11/careerCrafter-client",
+    link: "https://careercrafter5.web.app/",
+    image: projectThumb4,
+    description: "● AI-Powered Live Interview – Real-time candidate evaluation through adaptive AI analysis.● AI-Driven Job Matching – AI fetches and matches jobs based on users’ skills and profiles.● AI-Based Career Mentor – Personalized career guidance with data-driven insights."
+  },
   {
     id: 1,
     featured: true,

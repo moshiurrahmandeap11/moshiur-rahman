@@ -16,6 +16,9 @@ const MyPortfolio = () => {
     "Express.js",
     "MongoDB",
     "JWT",
+    "Next.js",
+    "PostgreSQL",
+    "TypeScript",
   ];
   const [animatedLangs, setAnimatedLangs] = useState(
     Array(languages.length).fill("")
