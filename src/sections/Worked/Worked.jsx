@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { useEffect } from "react";
+import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 // Mock project images - replace with your actual images
 const projectThumb = "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=300&fit=crop";
 const projectThumb1 = "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=300&fit=crop";
 const projectThumb2 = "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=400&h=300&fit=crop";
 const projectThumb4 = "https://i.postimg.cc/pLLPHfbZ/Screenshot-from-2025-11-08-00-05-47.png"
+const projectThumb5 = "https://thumbs.dreamstime.com/z/inventory-management-concept-cell-background-d-illustration-138441533.jpg";
+const projectThumb6 = "https://i.postimg.cc/dtcKKpPp/Screenshot-2026-02-15-180840.png";
+const projectThumb7 = "https://market-resized.envatousercontent.com/previews/files/226852993/preview_version/02_main_home.png?w=590&h=300&cf_fit=crop&crop=top&format=auto&q=85&s=edc154cde4a4c35779779c9922f84c1f0625839f007a5d7ae6d28e946bf89521";
+const projectThumb8 = "https://i.postimg.cc/N0nj8DyV/Screenshot-2026-02-15-182012.png";
+const projectThumb9 = "https://i.postimg.cc/Dy5Fd6R7/Screenshot-2026-02-15-182410.png";
+
 
 const projects = [
   {
@@ -18,6 +24,60 @@ const projects = [
     description: "● AI-Powered Live Interview – Real-time candidate evaluation through adaptive AI analysis.● AI-Driven Job Matching – AI fetches and matches jobs based on users’ skills and profiles.● AI-Based Career Mentor – Personalized career guidance with data-driven insights."
   },
   {
+    id: 4,
+    featured: true,
+    title: "Inventory Pro - one inventory of all solutions",
+    github: "https://github.com/moshiurrahmandeap11/super-inventory",
+    link: "https://inventory.moshiurrahman.online",
+    image: projectThumb5,
+    description: "Inventory Pro is a modern inventory management system built for speed and simplicity. It lets businesses track products, manage stock levels, monitor sales, and generate real-time reports effortlessly. With secure authentication and role-based access, it streamlines operations, reduces errors, and keeps your entire inventory workflow organized and efficient."
+  },
+  {
+    id: 5,
+    featured: true,
+    title: "Portfolio for business solutions ltd.",
+    github: "https://github.com/moshiurrahmandeap11/backbencherCoder.git",
+    link: "https://backbencher.moshiurrahman.online/",
+    image: projectThumb6,
+    description: "A modern portfolio website designed for service providers to showcase expertise, projects, and client testimonials in a professional way. It highlights services, pricing, and contact options, helping businesses build credibility, attract clients, and convert visitors into long-term customers effortlessly."
+  },
+  {
+    id: 6,
+    featured: true,
+    title: "School and college management software for all kind of institute",
+    github: "https://github.com/moshiurrahmandeap11/schoolmanagement-client.git",
+    link: "https://school.moshiurrahman.online/",
+    image: projectThumb7,
+    description: "A comprehensive school management website designed to streamline academic and administrative operations. It enables student enrollment, attendance tracking, class scheduling, result management, and fee monitoring in one secure platform. With dedicated dashboards for admins, teachers, students, and parents, it improves communication, organization, and overall institutional efficiency."
+  },
+  {
+    id: 7,
+    featured: true,
+    title: "Pressclub website for netrakona",
+    github: "https://github.com/moshiurrahmandeap11/pressclub-netrakona-client.git",
+    link: "https://pressclub-netrakona-client.vercel.app/",
+    image: projectThumb8,
+    description: "A dynamic press club website designed to connect journalists, share news updates, and manage events efficiently. It features member registration, news publishing, event announcements, and media galleries. With a clean, professional interface, it strengthens communication, promotes transparency, and enhances collaboration within the press community."
+  },
+  {
+    id: 8,
+    featured: true,
+    title: "Projukti Sheba service provider website",
+    github: "https://github.com/moshiurrahmandeap11/projukti-sheba-client.git",
+    link: "https://projuktisheba.moshiurrahman.online/",
+    image: projectThumb9,
+    description: "Projuktisheba is a professional service provider website built to showcase technical solutions and client-focused services. It highlights offered services, completed projects, customer testimonials, and easy contact options. Designed with a clean interface and smooth user experience, it helps businesses build trust, attract new clients, and manage service inquiries efficiently."
+  },
+  {
+    id: 9,
+    featured: true,
+    title: "Modern personal blog website for client",
+    github: "https://github.com/moshiurrahmandeap11/elmul-furqaan.git",
+    link: "https://elmulforqaan.com/",
+    image: "https://i.postimg.cc/tCcvjVxN/image1.png",
+    description: "A modern personal blog designed for sharing ideas, experiences, and insights in a clean, engaging format. It features categorized posts, a comment system, and a responsive layout for seamless reading across devices. With a minimalist design and smooth navigation, it creates a personal brand and meaningful reader connection."
+  },
+    {
     id: 1,
     featured: true,
     title: "CodeCircle - Forum for Developers",
