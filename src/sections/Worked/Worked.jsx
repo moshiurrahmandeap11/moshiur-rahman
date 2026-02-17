@@ -2,26 +2,36 @@ import { useEffect } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 // Mock project images - replace with your actual images
-const projectThumb = "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=300&fit=crop";
-const projectThumb1 = "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=300&fit=crop";
-const projectThumb2 = "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=400&h=300&fit=crop";
-const projectThumb4 = "https://i.postimg.cc/pLLPHfbZ/Screenshot-from-2025-11-08-00-05-47.png"
-const projectThumb5 = "https://thumbs.dreamstime.com/z/inventory-management-concept-cell-background-d-illustration-138441533.jpg";
-const projectThumb6 = "https://i.postimg.cc/dtcKKpPp/Screenshot-2026-02-15-180840.png";
-const projectThumb7 = "https://market-resized.envatousercontent.com/previews/files/226852993/preview_version/02_main_home.png?w=590&h=300&cf_fit=crop&crop=top&format=auto&q=85&s=edc154cde4a4c35779779c9922f84c1f0625839f007a5d7ae6d28e946bf89521";
-const projectThumb8 = "https://i.postimg.cc/N0nj8DyV/Screenshot-2026-02-15-182012.png";
-const projectThumb9 = "https://i.postimg.cc/Dy5Fd6R7/Screenshot-2026-02-15-182410.png";
-
+const projectThumb =
+  "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=300&fit=crop";
+const projectThumb1 =
+  "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=300&fit=crop";
+const projectThumb2 =
+  "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=400&h=300&fit=crop";
+const projectThumb4 =
+  "https://i.postimg.cc/pLLPHfbZ/Screenshot-from-2025-11-08-00-05-47.png";
+const projectThumb5 =
+  "https://thumbs.dreamstime.com/z/inventory-management-concept-cell-background-d-illustration-138441533.jpg";
+const projectThumb6 =
+  "https://i.postimg.cc/dtcKKpPp/Screenshot-2026-02-15-180840.png";
+const projectThumb7 =
+  "https://market-resized.envatousercontent.com/previews/files/226852993/preview_version/02_main_home.png?w=590&h=300&cf_fit=crop&crop=top&format=auto&q=85&s=edc154cde4a4c35779779c9922f84c1f0625839f007a5d7ae6d28e946bf89521";
+const projectThumb8 =
+  "https://i.postimg.cc/N0nj8DyV/Screenshot-2026-02-15-182012.png";
+const projectThumb9 =
+  "https://i.postimg.cc/Dy5Fd6R7/Screenshot-2026-02-15-182410.png";
+  const projectThumb10 = "https://i.postimg.cc/N0t8Jqd2/image2.webp";
 
 const projects = [
   {
-    id:4,
+    id: 4,
     featured: true,
     title: "Career Crafter - AI powered Job Seeking platform",
     github: "https://github.com/moshiurrahmandeap11/careerCrafter-client",
     link: "https://careercrafter5.web.app/",
     image: projectThumb4,
-    description: "● AI-Powered Live Interview – Real-time candidate evaluation through adaptive AI analysis.● AI-Driven Job Matching – AI fetches and matches jobs based on users’ skills and profiles.● AI-Based Career Mentor – Personalized career guidance with data-driven insights."
+    description:
+      "● AI-Powered Live Interview – Real-time candidate evaluation through adaptive AI analysis.● AI-Driven Job Matching – AI fetches and matches jobs based on users’ skills and profiles.● AI-Based Career Mentor – Personalized career guidance with data-driven insights.",
   },
   {
     id: 4,
@@ -30,7 +40,8 @@ const projects = [
     github: "https://github.com/moshiurrahmandeap11/super-inventory",
     link: "https://inventory.moshiurrahman.online",
     image: projectThumb5,
-    description: "Inventory Pro is a modern inventory management system built for speed and simplicity. It lets businesses track products, manage stock levels, monitor sales, and generate real-time reports effortlessly. With secure authentication and role-based access, it streamlines operations, reduces errors, and keeps your entire inventory workflow organized and efficient."
+    description:
+      "Inventory Pro is a modern inventory management system built for speed and simplicity. It lets businesses track products, manage stock levels, monitor sales, and generate real-time reports effortlessly. With secure authentication and role-based access, it streamlines operations, reduces errors, and keeps your entire inventory workflow organized and efficient.",
   },
   {
     id: 5,
@@ -39,25 +50,30 @@ const projects = [
     github: "https://github.com/moshiurrahmandeap11/backbencherCoder.git",
     link: "https://backbencher.moshiurrahman.online/",
     image: projectThumb6,
-    description: "A modern portfolio website designed for service providers to showcase expertise, projects, and client testimonials in a professional way. It highlights services, pricing, and contact options, helping businesses build credibility, attract clients, and convert visitors into long-term customers effortlessly."
+    description:
+      "A modern portfolio website designed for service providers to showcase expertise, projects, and client testimonials in a professional way. It highlights services, pricing, and contact options, helping businesses build credibility, attract clients, and convert visitors into long-term customers effortlessly.",
   },
   {
     id: 6,
     featured: true,
     title: "School and college management software for all kind of institute",
-    github: "https://github.com/moshiurrahmandeap11/schoolmanagement-client.git",
+    github:
+      "https://github.com/moshiurrahmandeap11/schoolmanagement-client.git",
     link: "https://school.moshiurrahman.online/",
     image: projectThumb7,
-    description: "A comprehensive school management website designed to streamline academic and administrative operations. It enables student enrollment, attendance tracking, class scheduling, result management, and fee monitoring in one secure platform. With dedicated dashboards for admins, teachers, students, and parents, it improves communication, organization, and overall institutional efficiency."
+    description:
+      "A comprehensive school management website designed to streamline academic and administrative operations. It enables student enrollment, attendance tracking, class scheduling, result management, and fee monitoring in one secure platform. With dedicated dashboards for admins, teachers, students, and parents, it improves communication, organization, and overall institutional efficiency.",
   },
   {
     id: 7,
     featured: true,
     title: "Pressclub website for netrakona",
-    github: "https://github.com/moshiurrahmandeap11/pressclub-netrakona-client.git",
+    github:
+      "https://github.com/moshiurrahmandeap11/pressclub-netrakona-client.git",
     link: "https://pressclub-netrakona-client.vercel.app/",
     image: projectThumb8,
-    description: "A dynamic press club website designed to connect journalists, share news updates, and manage events efficiently. It features member registration, news publishing, event announcements, and media galleries. With a clean, professional interface, it strengthens communication, promotes transparency, and enhances collaboration within the press community."
+    description:
+      "A dynamic press club website designed to connect journalists, share news updates, and manage events efficiently. It features member registration, news publishing, event announcements, and media galleries. With a clean, professional interface, it strengthens communication, promotes transparency, and enhances collaboration within the press community.",
   },
   {
     id: 8,
@@ -66,7 +82,8 @@ const projects = [
     github: "https://github.com/moshiurrahmandeap11/projukti-sheba-client.git",
     link: "https://projuktisheba.moshiurrahman.online/",
     image: projectThumb9,
-    description: "Projuktisheba is a professional service provider website built to showcase technical solutions and client-focused services. It highlights offered services, completed projects, customer testimonials, and easy contact options. Designed with a clean interface and smooth user experience, it helps businesses build trust, attract new clients, and manage service inquiries efficiently."
+    description:
+      "Projuktisheba is a professional service provider website built to showcase technical solutions and client-focused services. It highlights offered services, completed projects, customer testimonials, and easy contact options. Designed with a clean interface and smooth user experience, it helps businesses build trust, attract new clients, and manage service inquiries efficiently.",
   },
   {
     id: 9,
@@ -75,16 +92,26 @@ const projects = [
     github: "https://github.com/moshiurrahmandeap11/elmul-furqaan.git",
     link: "https://elmulforqaan.com/",
     image: "https://i.postimg.cc/tCcvjVxN/image1.png",
-    description: "A modern personal blog designed for sharing ideas, experiences, and insights in a clean, engaging format. It features categorized posts, a comment system, and a responsive layout for seamless reading across devices. With a minimalist design and smooth navigation, it creates a personal brand and meaningful reader connection."
+    description:
+      "A modern personal blog designed for sharing ideas, experiences, and insights in a clean, engaging format. It features categorized posts, a comment system, and a responsive layout for seamless reading across devices. With a minimalist design and smooth navigation, it creates a personal brand and meaningful reader connection.",
   },
-    {
+  {
+    id: 10,
+    featured: true,
+    title: "Modern Blog - ready comfortably",
+    github: "https://github.com/moshiurrahmandeap11/modern-blog",
+    link: "https://modern-blog-one-alpha.vercel.app/",
+    image: projectThumb10,
+    description: "Modern Blog is a sleek, full-featured blogging platform built with React, Node.js, Express, and PostgreSQL. It allows users to create, edit, and manage blogs securely, with advanced search, user authentication, and responsive design for all devices."
+  },
+  {
     id: 1,
     featured: true,
     title: "CodeCircle - Forum for Developers",
     github: "https://github.com/moshiurrahman/codecircle",
     link: "https://codecircle5.web.app/",
     image: projectThumb2,
-    description: "A modern developer community platform"
+    description: "A modern developer community platform",
   },
   {
     id: 2,
@@ -93,7 +120,7 @@ const projects = [
     github: "https://github.com/moshiurrahman/coursion",
     link: "https://coursion-9faf6.web.app/",
     image: projectThumb,
-    description: "Interactive learning management system"
+    description: "Interactive learning management system",
   },
   {
     id: 3,
@@ -102,22 +129,25 @@ const projects = [
     github: "https://github.com/moshiurrahman/miverr",
     link: "https://miverr-7ac31.web.app/",
     image: projectThumb1,
-    description: "Local freelancing marketplace solution"
+    description: "Local freelancing marketplace solution",
   },
 ];
 
 const Worked = () => {
   useEffect(() => {
     // Initialize animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-        }
-      });
-    }, { threshold: 0.1 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
 
-    const elements = document.querySelectorAll('.animate-on-scroll');
+    const elements = document.querySelectorAll(".animate-on-scroll");
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
@@ -142,7 +172,7 @@ const Worked = () => {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
+              animationDuration: `${2 + Math.random() * 3}s`,
             }}
           />
         ))}
@@ -174,10 +204,9 @@ const Worked = () => {
               <div className="relative h-full">
                 {/* Glassy Card Container */}
                 <div className="relative h-full backdrop-blur-xl bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/20 rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 ease-out hover:scale-105 hover:rotate-1 hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] hover:border-white/30 group-hover:bg-gradient-to-br group-hover:from-white/15 group-hover:via-white/10 group-hover:to-white/5">
-                  
                   {/* Shimmer Effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  
+
                   {/* Featured Badge */}
                   {project.featured && (
                     <div className="absolute top-4 left-4 z-20">
@@ -195,7 +224,7 @@ const Worked = () => {
                       alt={project.title}
                       className="w-full h-full object-cover transform group-hover:scale-110 transition-all duration-700 ease-out"
                     />
-                    
+
                     {/* Floating Action Buttons */}
                     <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
                       <a
@@ -266,7 +295,9 @@ const Worked = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-20 animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000 delay-1000">
           <div className="inline-block p-6 backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl shadow-2xl">
-            <p className="text-slate-300 mb-4">Interested in working together?</p>
+            <p className="text-slate-300 mb-4">
+              Interested in working together?
+            </p>
             <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold rounded-xl hover:from-orange-400 hover:to-pink-400 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25">
               Get In Touch
             </button>
@@ -279,12 +310,17 @@ const Worked = () => {
           opacity: 1 !important;
           transform: translateY(0) !important;
         }
-        
+
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
         }
-        
+
         .animate-float {
           animation: float 3s ease-in-out infinite;
         }
